@@ -1,0 +1,72 @@
+﻿@model DistributorManagement.ViewModels.SalesRegisterViewModel
+
+@{
+    ViewBag.Title = "SaleRegister Report";
+    int i = 1;
+}
+
+<div style="text-align:right;" class="hidden-print" >
+    <br />
+    <a class="btn btn-success btn-sm" onclick="window.print()">Print</a>
+</div>
+
+<h4  style="text-align:center">@Html.DisplayFor(model => model.SalesRegister.Manufacturer.Name)</h4>
+<h4 style="text-align:center">@Html.DisplayFor(model => model.SalesRegister.Manufacturer.Address)</h4>
+<h5 style="text-align:center; font-weight:bold">Sales Register Report</h5>
+<br />
+
+<table class="table">
+    <tr>
+        <td><span style="font-weight:bold;">Sale Register ID:</span> @Model.SalesRegister.ID </td>
+        <td><span style="font-weight:bold;">From:</span> @Model.SalesRegister.From.ToString("dd-MMM-yyyy") </td>
+        <td><span style="font-weight:bold;">To:</span> @Model.SalesRegister.To.ToString("dd-MMM-yyyy") </td>
+    </tr>
+    <tr>
+        <td><span style="font-weight:bold;">Registration Date:</span> @Model.SalesRegister.RegistrationDate.ToString("dd-MMM-yyyy")</td>
+        <td><span style="font-weight:bold;">SR:</span> @Html.DisplayFor(model => model.SalesRegister.Sr.Name) </td>
+        <td><span style="font-weight:bold;">DSR:</span> @Html.DisplayFor(model => model.SalesRegister.Dsr.Name) </td>
+    </tr>
+    <tr>
+        <td ><span style="font-weight:bold;">Area:</span> @Html.DisplayFor(model => model.SalesRegister.Area.Name) </td>
+    </tr>
+</table>
+<br />
+<br />
+
+<table class="table">
+    <tr>
+        <th> S/L</th>
+        <th> Retailer Code </th>
+        <th> Retailer Name  </th>
+        <th> Invoice Number</th>
+        <th style="text-align:right" > Due Amount </th>
+        <th> Gift Item </th>
+        <th style="text-align:right" > Return Amount</th>
+        <th style="text-align:right" > Net Amount</th>
+    </tr>
+
+    @foreach (var item in Model.CollectionItemDetails)
+    {
+
+        decimal Total = item.InvoiceAmount - item.ReturnAmount;
+
+        <tr>
+            <td> @(i++) </td>
+            <td>@item.Customer.Code</td>
+            <td>@item.Customer.Name</td>
+            <td>@item.InvoiceNumber</td>
+            <td style="text-align:right" >@item.InvoiceAmount.ToString("0.00")</td>
+            <td>@item.GiftItem</td>
+            <td style="text-align:right" >@item.ReturnAmount.ToString("0.00")</td>
+            <td style="text-align:right" >@Total.ToString("0.00")</td>
+        </tr>
+    }
+    <tr >
+        <td colspan="4" style="font-weight:bold;" > Total : </td>
+        <td style="text-align:right" >@Model.CollectionItemDetails.Sum(r => r.InvoiceAmount).ToString("0.00")</td>  
+        <td></td>
+        <td style="text-align:right" >@Model.CollectionItemDetails.Sum(r => r.ReturnAmount).ToString("0.00")</td>  
+        <td style="text-align:right" >@Model.CollectionItemDetails.Sum(r => r.InvoiceAmount - r.ReturnAmount).ToString("0.00")</td>  
+    </tr>
+
+</table>

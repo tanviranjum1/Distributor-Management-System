@@ -1,0 +1,217 @@
+﻿@model DistributorManagement.ViewModels.RetailerProductViewModel
+@{
+    ViewBag.Title = "Product Setup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    td {
+        font-weight: normal;
+    }
+</style>
+
+<h2 style="text-align:center">Retailers Products</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="row alert alert-success" role="alert">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Customer ID", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Customer.ID, new { htmlAttributes = new { @class = "form-control", @id = "customer-id", @readonly = "true" } })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Company", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("ManufacturerID", null, "", htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Product", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("products", Enumerable.Empty<SelectListItem>(), htmlAttributes: new { @class = "form-control", multiple = "multiple" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Select All", htmlAttributes: new { @class = "col-md-4 control-label" })
+                        <div class="col-md-8" style="margin-top:5px;">
+                            @Html.CheckBox("checkID", htmlAttributes: new { @checked = true })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-offset-4 col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-offset-4 col-md-8" style="margin-top:5px;">
+                            <a id="add" href="#" onclick="addRow();" class="btn btn-primary">Add</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<br>
+<br>
+<table id="dataTable" style="border-top: 2px solid gray; margin: auto; text-align:center; font-weight: bold; width:80%;" class="table table-bordered table-condensed">
+    <tr>
+        <th style="display:none; text-align:center" class="retailerID">Retailer ID</th>
+        <th style="text-align:center" class="manufacturername">Company</th>
+        <th style="display:none; text-align:center" class="productID">Product ID</th>
+        <th style="text-align:center" class="productname">Product Name</th>
+        <th style="text-align:center" class="actions">Actions</th>
+    </tr>
+
+    @foreach (var item in Model.RetailerProduct)
+    {
+        <tr>
+            <td style="display:none" class="retailerID">@item.CustomerID</td>
+            <td class="manufacturername">@item.Product.Manufacturer.Name</td>
+            <td style="display:none" class="productID">@item.ProductID</td>
+            <td class="productname">@item.Product.Name</td>
+            <td>
+                <button id="delete" onclick="delRow(this);" class="btn btn-danger btn-sm">Delete </button>
+            </td>
+        </tr>
+    }
+</table>
+<br>
+<br>
+
+<div style="text-align:center">
+    <button id="save" onclick="submitbtn()" class="btn btn-success" style="text-align:center;">Save </button>
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-info" })
+</div>
+<br />
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js">  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script>
+
+        const checkbox = document.getElementById('checkID')
+        checkbox.addEventListener('change', (event) => {
+            if (event.currentTarget.checked) {         
+                reloadProduct(true);
+            }
+            else {
+                reloadProduct(false);
+            }
+        })
+
+
+        $(document).ready(function () {
+            $("#ManufacturerID").select2();
+            $("#products").select2();
+
+        });
+      
+
+        $("#ManufacturerID").change(function () {
+            if ($("#ManufacturerID option:selected").text() == "") {
+                $("#products").empty();
+            }
+            else {
+                reloadProduct($("#checkID").prop("checked"));
+            }
+        });
+
+        function reloadProduct(selectAll)
+        {
+            $("#products").empty();
+            $.get('/Customers/getProduct',
+            function (data, status) {
+                for (i = 0; i < data.Product.length; i++) {
+                    if (data.Product[i].ManufacturerID == $("#ManufacturerID").val()) {
+                        var ddl = document.getElementById("products");
+                        var option = document.createElement("OPTION");
+                        option.innerHTML = data.Product[i].Name;
+                        option.value = data.Product[i].ID;
+                        option.selected = selectAll;
+                        ddl.options.add(option);
+                    }
+                }
+            });
+        }
+
+
+        function addRow() {
+
+            var selected = $($('#products')).select2("data");
+
+            var table = document.getElementById("dataTable");
+            var prodDict = {};
+
+            for (var i = 1, row; row = table.rows[i]; i++) {
+                prodDict[row.cells[2].innerText] = true;
+            }
+
+            for (var i = 0; i <= selected.length - 1; i++) {
+                if (prodDict[selected[i].id]) {
+                    continue;
+                }
+                $("#dataTable").append(
+                   '<tr> <td style="display:none" class="retailerID">' + $("#customer-id").val() + '</td>' +
+                   '<td class="manufacturername">' + $("#ManufacturerID option:selected").text() + '</td>' +
+                   '<td style="display:none" class="productID">' + selected[i].id + '</td>' +
+                   '<td class="productname">' + selected[i].text + '</td>' +
+                   '<td class="actions"> <button id="delete" onclick="delRow(this);"  class="btn btn-danger btn-sm">Delete </button>  </td></tr>'
+                );
+            }
+        }
+
+        function delRow(rowObj) {
+            $(rowObj).parent().parent().remove();
+        }
+
+        function submitbtn() {
+            var rows = [];
+            var table = document.getElementById("dataTable");
+            for (var i = 1, row; row = table.rows[i]; i++) {
+                var rowData = {
+                    'CustomerID': row.cells[0].innerText,
+                    'ProductID': row.cells[2].innerText
+                };
+                rows.push(rowData);
+            }
+            var inputData = {
+                'Customer': {
+                    'ID': $("#customer-id").val(),
+                },
+                'RetailerProduct': rows
+            };
+            $.post('/Customers/insertRetailerProducts', inputData,
+                function (data, status) {
+                    if (data.success) {
+                        alert("Operation Successful.");
+                        window.location.href = "/Customers";
+                    }
+                });
+        }
+
+    </script>
+
+}
+

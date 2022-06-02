@@ -1,0 +1,117 @@
+﻿@model DistributorManagement.ViewModels.CollectionsViewModel
+
+@{
+    ViewBag.Title = "Collection Report";
+}
+
+<div style="text-align:right;" class="hidden-print">
+    <br />
+    <a class="btn btn-success btn-sm" onclick="window.print()">Print</a>
+</div>
+
+<h4 style="text-align:center; font-weight:bold">Collection Report</h4>
+<br />
+
+<table class="table">
+    <tr>
+        <td><span style="font-weight:bold;">Collection ID:</span> @Model.Collection.ID </td>
+        <td><span style="font-weight:bold;">Dsr:</span> @Model.Collection.Dsr.Name </td>
+        <td><span style="font-weight:bold;">Date:</span> @Model.Collection.Date.ToString("dd MMM yyyy") </td>
+    </tr>
+</table>
+
+<br />
+<br />
+
+<table class="table">
+    <tr>
+        <th style="text-align:left">Invoice No.</th>
+        <th style="text-align:left">Retailer</th>
+        <th style="text-align:left">Sales Register ID</th>
+        <th style="display:none">Sales Register Details ID</th>
+        <th style="text-align:left">Gift</th>
+        <th style="text-align:left">Area</th>
+        <th style="text-align:right">Invoice Amount</th>
+        <th style="text-align:right">Collection Amount</th>
+        <th style="text-align:right">Return Amount</th>
+    </tr>
+
+    @foreach (var item in Model.CollectionItemDetails)
+    {
+        <tr>
+            <td>@item.InvoiceNumber</td>
+            <td>@item.Customer.Name</td>
+            <td>@item.SalesRegisterID</td>
+            <td style="display:none">@item.ID</td>
+            <td>@item.GiftItem</td>
+            <td>@item.SalesRegister.Area.Name</td>
+            <td class="invoiceamount" style="text-align:right">@item.InvoiceAmount.ToString("0.00")</td>
+            <td class="collectinput" style="text-align:right">@item.CollectionAmount.ToString("0.00")</td>
+            <td id="returninput" style="text-align:right">@item.ReturnAmount.ToString("0.00")</td>
+        </tr>
+    }
+
+    <tr>
+        <td colspan="5" style="font-weight:bold;" > Total : </td>
+        <td style="text-align:right">@Model.CollectionItemDetails.Sum(r => r.InvoiceAmount).ToString("0.00")</td>
+        <td style="text-align:right">@Model.CollectionItemDetails.Sum(r => r.CollectionAmount).ToString("0.00")</td>
+        <td style="text-align:right">@Model.CollectionItemDetails.Sum(r => r.ReturnAmount).ToString("0.00")</td>
+    </tr>
+</table>
+
+<br />
+<br />
+
+<table class="table">
+    <tr>
+        <th colspan="4" style="text-align:center; font-size:18px;" >Expenses</th>
+    </tr>
+    <tr>
+        <th>Expense Head</th>
+        <th>Company</th>
+        <th>Product</th>
+        <th style="text-align:right">Amount</th>
+    </tr>
+    @foreach (var item in Model.CollectionExpenses)
+    {
+        <tr>
+            <td>@item.ExpenseHead.Name</td>
+            @if (item.Manufacturer != null)
+            {
+                <td>@item.Manufacturer.Name</td>
+            }
+            else
+            {
+                <td></td>
+            }
+            @if (item.Product != null)
+            {
+                <td>@item.Product.Name</td>
+            }
+            else
+            {
+                <td></td>
+            }
+            <td style="text-align:right">@item.Amount.ToString("0.00")</td>
+        </tr>
+    }
+    <tr>
+        <td colspan="3" style="font-weight:bold;" > Total : </td>
+        <td style="text-align:right">@Model.CollectionExpenses.Sum(r => r.Amount).ToString("0.00")</td>
+    </tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

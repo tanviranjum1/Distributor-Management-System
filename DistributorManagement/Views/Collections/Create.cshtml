@@ -1,0 +1,527 @@
+﻿@model DistributorManagement.ViewModels.CollectionsViewModel
+
+
+@{
+    ViewBag.Title = "Collection Entry";
+}
+
+<style>
+    td {
+        font-weight: normal;
+    }
+</style>
+
+
+<h2 style="text-align:center;">Collection Entry</h2>
+<hr />
+<br />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="row alert alert-success" role="alert">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.Editor("date", new { htmlAttributes = new { @class = "form-control", @Value = DateTime.Today.ToString("dd-MMM-yyyy") } })
+                            @Html.ValidationMessage("Date", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Dsr", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("DsrID", null, String.Empty, htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<br />
+<br />
+
+
+<table id="dataTable" style="border-top: 2px solid gray; margin: auto;  text-align:center; font-weight: bold;" class="table table-bordered table-condensed">
+    <tr>
+        <th style="text-align:left">Sale Reg. ID</th>
+        <th style="text-align:left">Invoice No.</th>
+        <th style="text-align:left">Retailer</th>
+        <th style="display:none">Sales Register Details ID</th>
+        <th style="text-align:left">Gift</th>
+        <th style="text-align:left">Area</th>
+        <th style="text-align:right">Invoice Amount</th>
+        <th style="text-align:right">Prev. Collection Amount</th>
+        <th style="text-align:right">Collection Amount</th>
+        <th style="text-align:right">Prev. Return Amount</th>
+        <th style="text-align:right">Return Amount</th>
+        <th style="text-align:right">Due Amount</th>
+    </tr>
+</table>
+<br />
+<br />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row alert alert-info" role="alert">
+        <div class="form-horizontal">
+            <div class="row">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Expense Head", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("expenses", (IEnumerable<SelectListItem>)ViewBag.ExpenseHeadID, String.Empty, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Company", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("manufacturers", (IEnumerable<SelectListItem>)ViewBag.ManufacturerID, String.Empty, new { @class = "form-control"})
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Product", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("products", Enumerable.Empty<SelectListItem>(), new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Amount", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.Editor("amount", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-md-offset-1">
+                    <a id="add" onclick="addRow();" class="btn btn-primary">Add</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<br>
+<br>
+
+<table id="dataTableTwo" style="border-top: 2px solid gray; margin: auto; text-align:center; font-weight: bold;"  class="table table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th style="text-align:left">Expense Head</th>
+            <th style="display:none;">Expense ID</th>
+            <th style="text-align:left">Company</th>
+            <th style="display:none;">Company ID</th>
+            <th style="text-align:left">Product</th>
+            <th style="display:none;">Product ID</th>
+            <th style="text-align:right">Amount</th>
+            <th style="text-align:center">Action</th>
+        </tr>
+    </thead>
+    <tbody id="expense-records"></tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" style="text-align:center; font-weight:bold">Total: </td>
+            <td style="text-align:right" id="total-amount">0</td>
+        </tr>
+    </tfoot>
+
+</table>
+<br>
+<br />
+<div class="form-group" style="text-align:center">
+    <input type="submit" value="Save" class="btn btn-success" id="save" onclick="save()" />
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-info" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js">  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/CustomValidations.js"></script>
+
+    <script>
+        var totalamount = 0;
+        var errorColor = "#eccfcf";
+        var defaultColor = "#FFFFFF";
+
+        var editStat = false;
+        var currObj = null;
+        var prodValueForEditExpense = null;
+
+        function editRow(rowObj) {
+            var expvalue = $(rowObj).parent().parent().find(".exp-id").text();
+            $("#expenses").val(expvalue).trigger('change');
+
+            var amount = $(rowObj).parent().parent().find(".am").text();
+            $("#amount").val(amount);
+            totalamount -= amount;
+
+            var manuvalue = $(rowObj).parent().parent().find(".manu-id").text();
+            $("#manufacturers").val(manuvalue).trigger('change');
+
+            prodValueForEditExpense = $(rowObj).parent().parent().find(".prod-id").text();
+
+            editStat = true;
+            currObj = rowObj;
+        }
+
+        function addRow() {
+
+            if (document.getElementById("expenses").value == "") {
+                alert("Please Select Expense Head");
+            }
+            else if (document.getElementById("amount").value == "") {
+                alert("Please Enter Amount For Expense Head");
+            }
+            else {
+                if (editStat) {
+                    $(currObj).parent().parent().find(".exp").text($("#expenses option:selected").text());
+                    $(currObj).parent().parent().find(".am").text($("#amount").val());
+                    $(currObj).parent().parent().find(".manu").text($("#manufacturers option:selected").text());
+                    $(currObj).parent().parent().find(".prod").text($("#products option:selected").text());
+                    $(currObj).parent().parent().find(".exp-id").text($("#expenses option:selected").val());
+                    $(currObj).parent().parent().find(".manu-id").text($("#manufacturers option:selected").val());
+                    $(currObj).parent().parent().find(".prod-id").text($("#products option:selected").val());
+                    totalamount += parseFloat($("#amount").val());
+                    editStat = false;
+                    currObj = null;
+                }
+                else {
+                    totalamount += parseFloat($("#amount").val());
+                    $("#dataTableTwo tbody").append(
+                        '<tr><td class="exp" style="text-align:left" >' + $("#expenses option:selected").text() + '</td>' +
+                        '<td class="exp-id" style="display:none;">' + $("#expenses option:selected").val() + '</td>' +
+                        '<td class="manu" style="text-align:left" >' + $("#manufacturers option:selected").text() + '</td>' +
+                        '<td class="manu-id" style="display:none;">' + $("#manufacturers option:selected").val() + '</td>' +
+                        '<td class="prod" style="text-align:left" >' + $("#products option:selected").text() + '</td>' +
+                        '<td class="prod-id" style="display:none;">' + $("#products option:selected").val() + '</td>' +
+                        '<td class="am" style="text-align:right" >' + $("#amount").val() + '</td>' +
+                        '<td><button id="edit" onclick="editRow(this);" class="btn btn-warning btn-sm">Edit </button> <button id="delete" onclick="delRow(this);"  class="btn btn-danger btn-sm">Delete </button>  </td></tr>'
+                    );
+                }
+                document.getElementById("total-amount").innerText = totalamount;
+
+            }
+        }
+
+        function delRow(rowObj) {
+            
+            var amount = $(rowObj).parent().parent().find(".am").text();
+            totalamount -= amount;
+            document.getElementById("total-amount").innerText = totalamount;
+            $(rowObj).parent().parent().remove();
+
+        }
+
+
+        $("#DsrID").change(function () {
+            if ($("#DsrID option:selected").text() == "") {
+                console.log("Null state");
+            }
+            else {
+                $("#dataTable .row-data").remove();
+                document.getElementById("dataTable").style.display = "block";
+
+                $.get('/Collections/getSalesRegisterDetails?dsrId=' + $("#DsrID").val() + '&&dueOnly=true',
+                    function (data, status) {
+                        var invoicesum = 0;
+                        var prevcolsum = 0;
+                        var prevretsum = 0;
+                        var duesum = 0;
+                        for (i = 0; i < data.SalesRegisterDetail.length; i++) {
+                            var dues = (parseFloat(data.SalesRegisterDetail[i].InvoiceAmount) - (parseFloat(data.SalesRegisterDetail[i].PreviousCollectionAmount) + parseFloat(data.SalesRegisterDetail[i].PreviousReturnAmount)))
+                            $("#dataTable").append(
+                               '<tr class="row-data"><td style="text-align:left">' + data.SalesRegisterDetail[i].SalesRegisterID + '</td>' +
+                               '<td style="text-align:left">' + data.SalesRegisterDetail[i].InvoiceNumber + '</td>' +
+                               '<td style="text-align:left">' + data.SalesRegisterDetail[i].Customer.Name + '</td>' +
+                               '<td style="display:none" >' + data.SalesRegisterDetail[i].ID + '</td>' +
+                               '<td style="text-align:left">' + data.SalesRegisterDetail[i].GiftItem + '</td>' +
+                               '<td style="text-align:left">' + data.SalesRegisterDetail[i].SalesRegister.Area.Name + '</td>' +
+                               '<td class="invoiceamount" style="text-align:right" >' + data.SalesRegisterDetail[i].InvoiceAmount + '</td>' +
+                               '<td  style="text-align:right" >' + data.SalesRegisterDetail[i].PreviousCollectionAmount + '</td>' +
+                               '<td class="collectinput" style="text-align:right" contenteditable="true" onkeyup="collectEvent(this)">' + 0 + '</td>' +
+                               '<td style="text-align:right" >' + data.SalesRegisterDetail[i].PreviousReturnAmount + '</td>' +
+                               '<td id="returninput"  style="text-align:right" contenteditable="true"  onkeyup="returnEvent(this)">' + 0 + '</td>' +
+                              '<td class="due" style="text-align:right">' + dues + '</td></tr>'
+                            );
+                            invoicesum += parseFloat(data.SalesRegisterDetail[i].InvoiceAmount);
+                            prevcolsum += parseFloat(data.SalesRegisterDetail[i].PreviousCollectionAmount);
+                            prevretsum += parseFloat(data.SalesRegisterDetail[i].PreviousReturnAmount);
+                            console.log(dues);
+                            duesum += dues;
+                        }
+                        $("#dataTable").append('<tr class="row-data" >' +
+                            '<td colspan="5" style="text-align:center; font-weight:bold">Total :</td>' +
+                            '<td style="text-align:right">' + invoicesum + '</td>' +
+                            '<td style="text-align:right">' + prevcolsum + '</td>' +
+                            '<td style="text-align:right" id="collectionsum">' + 0 + '</td>' +
+                            '<td style="text-align:right">' + prevretsum + '</td>' +
+                            '<td style="text-align:right" id="returnsum">' + 0 + '</td>' +
+                            '<td style="text-align:right" id="duesum">' + duesum + '</td>' +
+                            '</tr>');
+                    });
+            }
+        });
+
+
+        $("#expenses").change(function () {
+            if ($("#expenses option:selected").text() == "") {
+            }
+            else {
+                $.get('/Collections/getAmount',
+                function (data, status) {
+                    for (i = 0; i < data.Expense.length; i++) {
+                        if (data.Expense[i].ExpenseHeadID == $("#expenses").val()) {
+                            document.getElementById("amount").value = data.Expense[i].Amount;
+                        }
+                    }
+                });
+            }
+        });
+
+
+        $("#manufacturers").change(function () {
+            if ($("#manufacturers option:selected").text() == "") {
+                $("#products").empty();
+            }
+            else {
+                $("#products").empty();
+                var ddl = document.getElementById("products");
+                var option = document.createElement("OPTION");
+                option.innerHTML = "";
+                option.value = "";
+                ddl.options.add(option);
+                $.get('/Collections/getProducts',
+                function (data, status) {
+                    for (i = 0; i < data.Product.length; i++) {
+                        if (data.Product[i].ManufacturerID == $("#manufacturers").val()) {
+                            var ddl = document.getElementById("products");
+                            var option = document.createElement("OPTION");
+                            option.innerHTML = data.Product[i].Name;
+                            option.value = data.Product[i].ID;
+                            ddl.options.add(option);
+                        }
+                    }
+
+                    if (editStat) {
+                        $("#products").val(prodValueForEditExpense).trigger('change');
+                    }
+
+                });
+            }
+        });
+
+        function collectEvent(rowObj) {
+
+            var invoiceam = parseInt($(rowObj).parent().find('td:eq(6)').text());
+            var prevcollectionam = parseInt($(rowObj).parent().find('td:eq(7)').text());
+            var collectionam = parseInt($(rowObj).parent().find('td:eq(8)').text());
+            var prevreturnam = parseInt($(rowObj).parent().find('td:eq(9)').text());
+            var returnam = parseInt($(rowObj).parent().find('td:eq(10)').text());
+
+            isValidWithError($(rowObj).parent().find('td:eq(8)'), 'Collection Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
+
+            if (returnam == 0) {
+                $(rowObj).parent().find('td:eq(11)').text(invoiceam - (collectionam + prevcollectionam + prevreturnam));
+            }
+            else {
+                $(rowObj).parent().find('td:eq(11)').text(invoiceam - (collectionam + returnam + prevcollectionam + prevreturnam));
+            }
+
+            isValidWithError($(rowObj).parent().find('td:eq(11)'), 'Due Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
+
+            var rows = [];
+            var table = document.getElementById("dataTable");
+            var colsum = 0;
+            var retsum = 0;
+            var duesum = 0;
+
+            for (var i = 1, row; row = table.rows[i]; i++) {
+                if (table.rows.length == i + 1) {
+                    document.getElementById("collectionsum").innerText = colsum;
+                    document.getElementById("returnsum").innerText = retsum;
+                    document.getElementById("duesum").innerText = duesum;
+                    break;
+                }
+                colsum += parseInt(row.cells[8].innerText);
+                retsum += parseInt(row.cells[10].innerText);
+                duesum += parseInt(row.cells[11].innerText);
+            }
+        }
+
+        function returnEvent(rowObj) {
+            var invoiceam = parseInt($(rowObj).parent().find('td:eq(6)').text());
+            var prevcollectionam = parseInt($(rowObj).parent().find('td:eq(7)').text());
+            var collectionam = parseInt($(rowObj).parent().find('td:eq(8)').text());
+            var prevreturnam = parseInt($(rowObj).parent().find('td:eq(9)').text());
+            var returnam = parseInt($(rowObj).parent().find('td:eq(10)').text());
+
+            isValidWithError($(rowObj).parent().find('td:eq(10)'), 'Return Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
+
+            if (returnam == 0) {
+                $(rowObj).parent().find('td:eq(11)').text(invoiceam - (collectionam + prevcollectionam + prevreturnam));
+            }
+            else {
+                $(rowObj).parent().find('td:eq(11)').text(invoiceam - (collectionam + returnam + prevcollectionam + prevreturnam));
+            }
+
+            isValidWithError($(rowObj).parent().find('td:eq(11)'), 'Due Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
+
+            var rows = [];
+            var table = document.getElementById("dataTable");
+
+            var colsum = 0;
+            var retsum = 0;
+            var duesum = 0;
+
+            for (var i = 1, row; row = table.rows[i]; i++) {
+                if (table.rows.length == i + 1) {
+                    document.getElementById("collectionsum").innerText = colsum;
+                    document.getElementById("returnsum").innerText = retsum;
+                    document.getElementById("duesum").innerText = duesum;
+                    break;
+                }
+                colsum += parseInt(row.cells[8].innerText);
+                retsum += parseInt(row.cells[10].innerText);
+                duesum += parseInt(row.cells[11].innerText);
+            }
+        }
+
+
+        $(document).ready(function () {
+            $("#DsrID").select2();
+            $("#expenses").select2();
+            $("#manufacturers").select2();
+            $("#products").select2();
+        });
+
+        $(document).ready(function () {
+            $('#date').datetimepicker({
+                showClear: true,
+                format: "DD-MMM-YYYY"
+            });
+        });
+
+
+        function validateTableData(tableId) {
+
+            var table = document.getElementById(tableId);
+            var errorCount = 0;
+
+            for (var i = 1, row; row = table.rows[i]; i++) {
+
+                if (i + 1 == table.rows.length) {
+                    break;
+                }
+
+                if (!isValidWithError(row.cells[8], 'Collection Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor)) {
+                    errorCount++;
+                }
+
+                if (!isValidWithError(row.cells[10], 'Return Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor)) {
+                    errorCount++;
+                }
+
+                if (!isValidWithError(row.cells[11], 'Due Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor)) {
+                    errorCount++;
+                }
+            }
+
+            if (errorCount) {
+                return false;
+            }
+            else {
+                return true;
+            }
+
+        }
+
+        function save() {
+
+            if (document.getElementById("date").value == "") {
+                alert("Please Enter The Date first");
+            }
+            else if (document.getElementById("DsrID").value == "") {
+                alert("Please Select DSR first");
+            }
+            else if (!validateTableData("dataTable")) {
+                alert("Please Check your inputs.");
+            }
+            else {
+
+                var rows = [];
+                var table = document.getElementById("dataTable");
+
+                for (var i = 1, row; row = table.rows[i]; i++) {
+                    if (table.rows.length == i + 1) {
+                        break;
+                    }
+
+                    var rowData = {
+                        'SalesRegisterDetailsID': row.cells[3].innerText,
+                        'CollectionAmount': row.cells[8].innerText,
+                        'ReturnAmount': row.cells[10].innerText,
+                    };
+                    rows.push(rowData);
+                }
+
+                var rowsTwo = [];
+
+                $("#dataTableTwo tbody tr").each(function () {
+
+                    var rowData = {
+                        'ExpenseHeadID': $(this).find(".exp-id") ? $(this).find(".exp-id").text() : "",
+                        'ManufacturerID': $(this).find(".manu-id").text() ? $(this).find(".manu-id").text() : "",
+                        'ProductID': $(this).find(".prod-id").text() ? $(this).find(".prod-id").text() : "",
+                        'Amount': $(this).find(".am").text(),
+                    };
+
+                    rowsTwo.push(rowData);
+                });
+                console.log(rowsTwo);
+
+                var inputData = {
+                    'Collection': {
+                        'Date': $("#date").val(),
+                        'DsrID': $("#DsrID option:selected").val(),
+                    },
+                    'CollectionDetails': rows,
+                    'CollectionExpenses': rowsTwo
+                };
+                $.post('/Collections/insertCollections', inputData,
+                    function (data, status) {
+                        if (data.success) {
+                            alert("Operation Successful.");
+                            window.location.href = "/Collections";
+                        }
+                    });
+            }
+        }
+    </script>
+
+}
+
+
+

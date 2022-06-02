@@ -1,0 +1,90 @@
+﻿@model DistributorManagement.ViewModels.ExpenseHeadFilterViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2 style="text-align: center">Expense Heads</h2>
+
+
+@using (Html.BeginForm())
+{
+    <div class="row alert alert-info hidden-print">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ExpenseHeadID, "Heads", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("ExpenseHeadID", null, "", htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="submit" value="Search" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary btn-sm" })
+</p>
+
+
+<table class="table table-bordered table-condensed table-striped">
+    <tr>
+        <th>
+           Expense Head
+        </th>
+        <th>
+            Opening Balance
+        </th>
+        <th>
+            Default Value
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.ExpenseHeadList) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OpeningBalance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DefaultValue)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.ID }, new { @class = "btn btn-warning btn-xs" }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.ID }, new { @class = "btn btn-danger btn-xs", onclick = "return confirm('Are you sure to delete?');" })
+        </td>
+    </tr>
+}
+
+</table>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js">  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script>
+
+
+        $(document).ready(function () {
+            $("#ExpenseHeadID").select2();
+        });
+
+
+    </script>
+
+
+}

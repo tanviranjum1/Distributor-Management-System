@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace DistributorManagement.Models
+{
+    public class Dsr
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+
+        public string NationalID { get; set; }
+
+        public string Contact { get; set; }
+        public string Address { get; set; }
+     
+      
+    }
+}

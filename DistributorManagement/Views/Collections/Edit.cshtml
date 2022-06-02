@@ -1,0 +1,501 @@
+﻿@model DistributorManagement.ViewModels.CollectionsViewModel
+
+@{
+    ViewBag.Title = "Edit Collection";
+}
+
+
+<style>
+    td {
+        font-weight: normal;
+    }
+</style>
+<h2 style="text-align:center">Edit Collection</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row alert alert-success" role="alert">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.Label("Collection ID", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Collection.ID, new { htmlAttributes = new { @class = "form-control", @id = "col-id", @readonly = "true" } })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.Label("Date", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Collection.Date, new { htmlAttributes = new { @class = "form-control", @id = "date", @Value = Model.Collection.Date.ToString("dd-MMM-yyyy") } })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Collection.DsrID, "Dsr", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownList("DsrID", null, htmlAttributes: new { @class = "form-control extra-class",@readonly = "true" }  )
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+
+<table id="dataTable" style="border-top: 2px solid gray; margin: auto; text-align:center; font-weight: bold; " class="table table-bordered table-condensed">
+    <tr>
+        <th style="text-align:left">Invoice No.</th>
+        <th style="text-align:left">Retailer</th>
+        <th style="text-align:left">Sale Reg ID</th>
+        <th style="display:none">Sale Reg Details ID</th>
+        <th style="text-align:left">Gift</th>
+        <th style="text-align:left">Area</th>
+        <th style="text-align:right">Invoice Amount</th>
+        <th style="text-align:right">Prev. Collection Amount</th>
+        <th style="text-align:right">Collection Amount</th>
+        <th style="text-align:right">Prev. Return Amount</th>
+        <th style="text-align:right">Return Amount</th>
+        <th style="text-align:right">Due Amount</th>
+    </tr>
+   
+    @foreach (var item in Model.CollectionItemDetails)
+    {
+        <tr class="row-data">
+            <td>@item.InvoiceNumber</td>
+            <td>@item.Customer.Name</td>
+            <td>@item.SalesRegisterID</td>
+            <td style="display:none">@item.ID</td>
+            <td>@item.GiftItem</td>
+            <td>@item.SalesRegister.Area.Name</td>
+            <td class="invoiceamount" style="text-align:right">@item.InvoiceAmount</td>
+            <td style="text-align:right">@(item.PreviousCollectionAmount - item.CollectionAmount)</td>
+            <td class="collectinput" style="text-align:right" contenteditable="true" onkeyup="collectEvent(this)">@item.CollectionAmount</td>
+            <td style="text-align:right">@(item.PreviousReturnAmount - item.ReturnAmount)</td>
+            <td id="returninput" style="text-align:right" contenteditable="true" onkeyup="returnEvent(this)">@item.ReturnAmount</td>
+            <td class="due" style="text-align:right">@(item.InvoiceAmount - item.CollectionAmount - item.ReturnAmount)</td>
+        </tr>
+    }
+
+    <tr class="row-data">
+        <td colspan="5"> Total : </td>
+        <td style="text-align:right">  @Model.CollectionItemDetails.Sum(r => r.InvoiceAmount)</td>
+        <td style="text-align:right">@Model.CollectionItemDetails.Sum(r => r.PreviousCollectionAmount - r.CollectionAmount)</td>
+        <td style="text-align:right" id="collectionsum">@Model.CollectionItemDetails.Sum(r => r.CollectionAmount)</td>
+        <td style="text-align:right">@Model.CollectionItemDetails.Sum(r => r.PreviousReturnAmount - r.ReturnAmount)</td>
+        <td style="text-align:right" id="returnsum">@Model.CollectionItemDetails.Sum(r => r.ReturnAmount)</td>
+        <td id="duesum" style="text-align:right">@Model.CollectionItemDetails.Sum(r => r.InvoiceAmount - r.CollectionAmount - r.ReturnAmount)</td>
+    </tr>
+</table>
+<br/>
+<br/>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row alert alert-info" role="alert">
+        <div class="form-horizontal">
+            <div class="row">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Expense Head", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("expenses", (IEnumerable<SelectListItem>)ViewBag.ExpenseHeadID, String.Empty, new { @class = "form-control extra-class" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Amount", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.Editor("amount", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Company", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("manufacturers", (IEnumerable<SelectListItem>)ViewBag.ManufacturerID, String.Empty, new { @class = "form-control extra-class" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Product", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("products", (IEnumerable<SelectListItem>)ViewBag.ProductID, String.Empty, new { @class = "form-control extra-class" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <a id="add" onclick="addRow();" class="btn btn-primary" style="margin-top:20px; margin-left:13px;">Add</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<br>
+<br>
+
+<table id="dataTableTwo" style="border-top: 2px solid gray; margin: auto; text-align:center; font-weight: bold;" class="table table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th style="text-align:center">Expense Head</th>
+            <th style="display:none;">Expense ID</th>
+            <th style="text-align:center">Amount</th>
+            <th style="text-align:center">Company</th>
+            <th style="display:none;">Company ID</th>
+            <th style="text-align:center">Product</th>
+            <th style="display:none;">Product ID</th>
+            <th style="text-align:center">Action</th>
+        </tr>
+    </thead> 
+    @foreach (var item in Model.CollectionExpenses)
+    {
+        <tbody>
+            <tr>
+                <td class="exp">@item.ExpenseHead.Name</td>
+                <td class="exp-id" style="display:none">@item.ExpenseHead.ID</td>
+                <td class="am">@item.Amount</td>
+                <td class="manu">@item.Manufacturer.Name</td>
+                <td class="manu-id" style="display:none"> @item.Manufacturer.ID</td>
+                <td class="prod">@item.Product.Name</td>
+                <td class="prod-id" style="display:none">@item.Product.ID</td>
+                <td>
+                    <button id="edit" onclick="editRow(this);" class="btn btn-warning btn-sm">Edit </button> <button id="delete" onclick="delRow(this);" class="btn btn-danger btn-sm">Delete </button>
+                </td>
+            </tr>
+        </tbody>
+    }
+</table>
+<br>
+<br>
+
+<br />
+<div class="form-group" style="text-align:center">
+    <input type="submit" value="Save" class="btn btn-success" id="save" onclick="save()" />
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-info" })
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+
+
+    <script>
+        var editStat = false;
+        var currObj = null;
+
+        function editRow(rowObj) {
+    
+            var dpvalue = $(rowObj).parent().parent().find(".exp-id").text();
+            $("#expenses").val(dpvalue).trigger('change');
+
+            $("#amount").val($(rowObj).parent().parent().find(".am").text());
+
+            var dpvalue2 = $(rowObj).parent().parent().find(".manu-id").text();
+            $("#manufacturers").val(dpvalue).trigger('change');
+
+            var dpvalue3 = $(rowObj).parent().parent().find(".prod-id").text();
+            $("#products").val(dpvalue).trigger('change');
+
+            editStat = true;
+            currObj = rowObj;
+        }
+
+        function addRow() {
+
+           
+            if (document.getElementById("expenses").value == "") {
+                alert("Please Select Expense Head");
+            }
+            else if (document.getElementById("amount").value == "") {
+                alert("Please Enter Amount For Expense Head");
+            }
+            else if (document.getElementById("manufacturers").value == "") {
+                alert("Please Select Company");
+            }
+            else  if (document.getElementById("products").value == "") {
+                alert("Please Select Product");
+                }
+            else {
+                if (editStat) {
+                    $(currObj).parent().parent().find(".exp").text($("#expenses option:selected").text());
+                    $(currObj).parent().parent().find(".am").text($("#amount option:selected").text());
+                    $(currObj).parent().parent().find(".manu").text($("#manufacturers option:selected").text());
+                    $(currObj).parent().parent().find(".prod").text($("#products option:selected").text());
+                    editStat = false;
+                    currObj = null;
+                }
+                else {
+                    $("#dataTableTwo tbody").append(
+                        '<tr><td class="exp">' + $("#expenses option:selected").text() + '</td>' +
+                        '<td class="exp-id" style="display:none;">' + $("#expenses option:selected").val() + '</td>' +
+                        '<td class="am">' + $("#amount").val() + '</td>' +
+                        '<td class="manu">' + $("#manufacturers option:selected").text() + '</td>' +
+                        '<td class="manu-id" style="display:none;">' + $("#manufacturers option:selected").val() + '</td>' +
+                        '<td class="prod">' + $("#products option:selected").text() + '</td>' +
+                        '<td class="prod-id" style="display:none;">' + $("#products option:selected").val() + '</td>' +
+                        '<td><button id="edit" onclick="editRow(this);" class="btn btn-warning btn-sm">Edit </button> <button id="delete" onclick="delRow(this);"  class="btn btn-danger btn-sm">Delete </button>  </td></tr>'
+                    );
+                } } 
+        }
+
+        function delRow(rowObj) {
+            $(rowObj).parent().parent().remove();
+        }
+
+
+        $("#expenses").change(function () {
+            if ($("#expenses option:selected").text() == "") {
+
+            }
+            else {
+                $.get('/Collections/getAmount',
+                function (data, status) {
+                    for (i = 0; i < data.Expense.length; i++) {
+                        if (data.Expense[i].ExpenseHeadID == $("#expenses").val()) {
+                            document.getElementById("amount").value = data.Expense[i].Amount;
+                        }
+                    }
+                });
+            }
+        });
+
+
+        $("#DsrID").change(function () {
+            if ($("#DsrID option:selected").text() == "") {
+                console.log("Null state");
+            }
+            else {
+                $("#dataTable .row-data").remove();
+                $.get('/Collections/getSalesRegisterDetails',
+                     function (data, status) {
+                         var invoicesum = 0;
+                         var prevcolsum = 0;
+                         var prevretsum = 0;
+                         var duesum = 0;
+                         for (i = 0; i < data.SalesRegisterDetail.length; i++) {
+                             if (data.SalesRegisterDetail[i].SalesRegister.DsrID == $("#DsrID").val()) {
+                                 var dues = (parseFloat(data.SalesRegisterDetail[i].InvoiceAmount) - (parseFloat(data.SalesRegisterDetail[i].PreviousCollectionAmount) + parseFloat(data.SalesRegisterDetail[i].PreviousReturnAmount)))
+                                 $("#dataTable").append(
+                                    '<tr class="row-data" ><td style="text-align:left">' + data.SalesRegisterDetail[i].InvoiceNumber + '</td>' +
+                                    '<td style="text-align:left">' + data.SalesRegisterDetail[i].Customer.Name + '</td>' +
+                                    '<td style="text-align:left">' + data.SalesRegisterDetail[i].SalesRegisterID + '</td>' +
+                                    '<td style="display:none" >' + data.SalesRegisterDetail[i].ID + '</td>' +
+                                    '<td style="text-align:left">' + data.SalesRegisterDetail[i].GiftItem + '</td>' +
+                                    '<td style="text-align:left">' + data.SalesRegisterDetail[i].SalesRegister.Area.Name + '</td>' +
+                                    '<td class="invoiceamount" style="text-align:right" >' + data.SalesRegisterDetail[i].InvoiceAmount + '</td>' +
+                                    '<td  style="text-align:right" >' + data.SalesRegisterDetail[i].PreviousCollectionAmount + '</td>' +
+                                    '<td class="collectinput" style="text-align:right" contenteditable="true" onkeyup="collectEvent(this)">' + 0 + '</td>' +
+                                    '<td style="text-align:right" >' + data.SalesRegisterDetail[i].PreviousReturnAmount + '</td>' +
+                                    '<td id="returninput"  style="text-align:right" contenteditable="true"  onkeyup="returnEvent(this)">' + 0 + '</td>' +
+                                   '<td class="due" style="text-align:right">' + dues + '</td></tr>'
+                                 );
+                                 invoicesum += parseFloat(data.SalesRegisterDetail[i].InvoiceAmount);
+                                 prevcolsum += parseFloat(data.SalesRegisterDetail[i].PreviousCollectionAmount);
+                                 prevretsum += parseFloat(data.SalesRegisterDetail[i].PreviousReturnAmount);
+                                 duesum += dues;
+                             }
+                         }
+                         $("#dataTable").append('<tr class="row-data" >' +
+                             '<td colspan="5" style="text-align:center; font-weight:bold">Total :</td>' +
+                             '<td style="text-align:right">' + invoicesum + '</td>' +
+                             '<td style="text-align:right">' + prevcolsum + '</td>' +
+                             '<td style="text-align:right" id="collectionsum">' + 0 + '</td>' +
+                             '<td style="text-align:right">' + prevretsum + '</td>' +
+                             '<td style="text-align:right" id="returnsum">' + 0 + '</td>' +
+                             '<td style="text-align:right" id="duesum">' + duesum + '</td>' +
+                             '</tr>');
+                     });
+            }
+        });
+
+
+        $("#manufacturers").change(function () {
+            if ($("#manufacturers option:selected").text() == "") {
+                $("#products").empty();
+            }
+            else {
+                $("#products").empty();
+                var ddl = document.getElementById("products");
+                var option = document.createElement("OPTION");
+                option.innerHTML = "";
+                option.value = "";
+                ddl.options.add(option);
+                $.get('/Collections/getProducts',
+                function (data, status) {
+                    for (i = 0; i < data.Product.length; i++) {
+                        if (data.Product[i].ManufacturerID == $("#manufacturers").val()) {
+                            var ddl = document.getElementById("products");
+                            var option = document.createElement("OPTION");
+                            option.innerHTML = data.Product[i].Name;
+                            option.value = data.Product[i].ID;
+                            ddl.options.add(option);
+                        }
+                    }
+                });
+            }
+        });
+
+        function collectEvent(rowObj) {
+            var invoiceam = parseInt($(rowObj).parent().find('td:eq(6)').text());
+            var prevcollectionam = parseInt($(rowObj).parent().find('td:eq(7)').text());
+            var collectionam = parseInt($(rowObj).parent().find('td:eq(8)').text());
+            var prevreturnam = parseInt($(rowObj).parent().find('td:eq(9)').text());
+            var returnam = parseInt($(rowObj).parent().find('td:eq(10)').text());
+
+            if (returnam == 0) {
+                $(rowObj).parent().find('td:eq(11)').text(invoiceam - (collectionam + prevcollectionam + prevreturnam));
+            }
+            else {
+                $(rowObj).parent().find('td:eq(11)').text(invoiceam - (collectionam + returnam + prevcollectionam + prevreturnam));
+            }
+
+            var rows = [];
+            var table = document.getElementById("dataTable");
+            var colsum = 0;
+            var retsum = 0;
+            var duesum = 0;
+
+            for (var i = 1, row; row = table.rows[i]; i++) {
+                if (table.rows.length == i + 1) {
+                    document.getElementById("collectionsum").innerText = colsum;
+                    document.getElementById("returnsum").innerText = retsum;
+                    document.getElementById("duesum").innerText = duesum;
+                    break;
+                }
+                colsum += parseInt(row.cells[8].innerText);
+                retsum += parseInt(row.cells[10].innerText);
+                duesum += parseInt(row.cells[11].innerText);
+            }
+        }
+
+        function returnEvent(rowObj) {
+            var invoiceam = parseInt($(rowObj).parent().find('td:eq(6)').text());
+            var prevcollectionam = parseInt($(rowObj).parent().find('td:eq(7)').text());
+            var collectionam = parseInt($(rowObj).parent().find('td:eq(8)').text());
+            var prevreturnam = parseInt($(rowObj).parent().find('td:eq(9)').text());
+            var returnam = parseInt($(rowObj).parent().find('td:eq(10)').text());
+
+            if (returnam == 0) {
+                $(rowObj).parent().find('td:eq(11)').text(invoiceam - (collectionam + prevcollectionam + prevreturnam));
+            }
+            else {
+                $(rowObj).parent().find('td:eq(11)').text(invoiceam - (collectionam + returnam + prevcollectionam + prevreturnam));
+            }
+
+            var rows = [];
+            var table = document.getElementById("dataTable");
+
+            var colsum = 0;
+            var retsum = 0;
+            var duesum = 0;
+
+            for (var i = 1, row; row = table.rows[i]; i++) {
+                if (table.rows.length == i + 1) {
+                    document.getElementById("collectionsum").innerText = colsum;
+                    document.getElementById("returnsum").innerText = retsum;
+                    document.getElementById("duesum").innerText = duesum;
+                    break;
+                }
+                colsum += parseInt(row.cells[8].innerText);
+                retsum += parseInt(row.cells[10].innerText);
+                duesum += parseInt(row.cells[11].innerText);
+            }
+        }
+
+
+        function save() {
+
+          if (document.getElementById("date").value == "")
+                {
+                    alert("Please Enter The Date first");
+                }
+          else if (document.getElementById("DsrID").value == "")
+               {
+                    alert("Please Select DSR first");
+                }
+           else
+           {
+                var rows = [];
+                var table = document.getElementById("dataTable");
+
+                for (var i = 1, row; row = table.rows[i]; i++) {
+                    if (table.rows.length == i + 1) {
+                        break;
+                    }
+                    console.log(row);
+                    var rowData = {
+                        'SalesRegisterDetailsID': row.cells[3].innerText,
+                        'CollectionAmount': row.cells[8].innerText,
+                        'ReturnAmount': row.cells[10].innerText,
+                    };
+                    rows.push(rowData);
+                }
+
+                var rowsTwo = [];
+
+                $("#dataTableTwo tbody tr").each(function () {
+                    var rowData = {
+                        'ExpenseHeadID': $(this).find(".exp-id") ? $(this).find(".exp-id").text() : "",
+                        'ManufacturerID': $(this).find(".manu-id").text() ? $(this).find(".manu-id").text() : "",
+                        'ProductID': $(this).find(".prod-id").text() ? $(this).find(".prod-id").text() : "",
+                        'Amount': $(this).find(".am").text(),
+                    };
+                    rowsTwo.push(rowData);
+                });
+                console.log(rows);
+                console.log(rowsTwo);
+
+                var inputData = {
+                    'Collection': {
+                        'ID': $("#col-id").val(),
+                        'Date': $("#date").val(),
+                        'DsrID': $("#DsrID option:selected").val(),
+                    },
+                    'CollectionDetails': rows,
+                    'CollectionExpenses': rowsTwo
+                };
+                $.post('/Collections/editCollections', inputData,
+                    function (data, status) {
+                        if (data.success) {
+                            alert("Operation Successful.");
+                            window.location.href = "/Collections";
+                        }
+                    });
+            }
+        }
+
+        $(document).ready(function () {
+            $("#expenses").select2();
+            $("#manufacturers").select2();
+            $("#products").select2();
+        });
+
+    </script>
+
+
+}
+
+
+
+
+

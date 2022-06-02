@@ -1,0 +1,342 @@
+﻿@model DistributorManagement.ViewModels.SalesRegisterViewModel
+
+@{
+    ViewBag.Title = "Edit Sale Register";
+}
+
+<style>
+    td {
+        font-weight: normal;
+    }
+</style>
+
+<h2 style="text-align:center">Edit Sale Register</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row alert alert-info" role="alert">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Sale Reg ID", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.SalesRegister.ID, new { htmlAttributes = new { @class = "form-control", @id = "salereg-id", @readonly = "true" } })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SalesRegister.From, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.SalesRegister.From, new { htmlAttributes = new { @class = "form-control", @id = "from-date", @Value = Model.SalesRegister.From.ToString("dd-MMM-yyyy") } })
+                            @Html.ValidationMessageFor(model => model.SalesRegister.From, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SalesRegister.To, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.SalesRegister.To, new { htmlAttributes = new { @class = "form-control", @Id = "to-date", @Value = Model.SalesRegister.To.ToString("dd-MMM-yyyy") } })
+                            @Html.ValidationMessageFor(model => model.SalesRegister.To, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SalesRegister.RegistrationDate, "Reg. Date", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.SalesRegister.RegistrationDate, new { htmlAttributes = new { @class = "form-control", @Id = "reg-date", @Value = Model.SalesRegister.RegistrationDate.ToString("dd-MMM-yyyy") } })
+                            @Html.ValidationMessageFor(model => model.SalesRegister.RegistrationDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SalesRegister.DsrID, "Dsr", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("DsrID", null, htmlAttributes: new { @class = "form-control extra-class" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SalesRegister.SrID, "Sr", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("SrID", null, htmlAttributes: new { @class = "form-control extra-class" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SalesRegister.ManufacturerID, "Company", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("ManufacturerID", null, htmlAttributes: new { @class = "form-control extra-class" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SalesRegister.ProductID, "Product", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("products", null, htmlAttributes: new { @class = "form-control extra-class" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SalesRegister.AreaID, "Area", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("AreaID", null, htmlAttributes: new { @class = "form-control extra-class" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">    
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SalesRegister.TotalInvoiceAmount, "Total Invoice", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.SalesRegister.TotalInvoiceAmount, new { htmlAttributes = new { @class = "form-control", @id="totinvoice" } })
+                            @Html.ValidationMessageFor(model => model.SalesRegister.TotalInvoiceAmount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row alert alert-info" role="alert">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.Label("Retailer", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("CustomerID", (IEnumerable<SelectListItem>)ViewBag.CustomerID, String.Empty, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Invoice No", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.Editor("invoiceno", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Due Amount", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.Editor("invoiceam", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Gift Item", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.Editor("gift", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-md-offset-1">
+                    <a id="add" href="#" onclick="addRow();" class="btn btn-primary">Add</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<br>
+
+<table id="dataTable" style="border-top: 2px solid gray; margin: auto; text-align:center; font-weight: bold;" class="table table-bordered table-condensed">
+    <tbody>
+        <tr>
+            <th style="display:none">Retailer ID</th>
+            <th style="text-align:center">Retailer Name</th>
+            <th style="text-align:center">Invoice Number</th>
+            <th style="text-align:center">Due Amount</th>
+            <th style="text-align:center">Gift Item</th>
+            <th style="text-align:center">Action</th>
+        </tr>
+        @foreach (var item in Model.SalesRegisterDetails)
+        {
+        <tr>
+            <td style="display:none" class="customer-id">@item.Customer.ID</td>
+            <td class="customere">@item.Customer.Name</td>
+            <td class="invoice">@item.InvoiceNumber</td>
+            <td class="invoicea">@item.InvoiceAmount</td>
+            <td class="gif">@item.GiftItem</td>
+            <td>
+                <button id="edit" onclick="editRow(this);" class="btn btn-warning btn-sm">Edit </button>
+                <button id="delete" onclick="delRow(this);" class="btn btn-danger btn-sm">Delete </button>
+            </td>
+        </tr>
+        }
+    </tbody>
+
+    <tfoot>
+        <tr>
+            <td colspan="2" style="text-align:center; font-weight:bold">Total: </td>
+            <td id="total-amount">@Model.SalesRegisterDetails.Sum(r => r.InvoiceAmount).ToString("0.00")</td>
+        </tr>
+    </tfoot>
+</table>
+
+<br />
+<br />
+<div class="form-group" style="text-align:center">
+    <input type="submit" value="Save" class="btn btn-success" id="save" onclick="save()" />
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-info" })
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js">  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#CustomerID").select2();
+            $("#AreaID").select2();
+            $("#ManufacturerID").select2();
+            $("#SrID").select2();
+            $("#DsrID").select2();
+            $("#products").select2();
+        });
+        var editStat = false;
+        var currObj = null;
+
+        var totalDueAmount = 0;
+        var rows = [];
+        var table = document.getElementById("dataTable");
+
+        for (var i = 1, row; row = table.rows[i]; i++) {
+            if (table.rows.length == i + 1) {
+                break;
+            }
+            totalDueAmount += parseInt(row.cells[3].innerText);
+        }
+        console.log(totalDueAmount);
+
+
+        function editRow(rowObj) {
+            var dpvalue = $(rowObj).parent().parent().find(".customer-id").text();
+            $("#CustomerID").val(dpvalue).trigger('change');
+            $("#invoiceno").val($(rowObj).parent().parent().find(".invoice").text());
+            $("#invoiceam").val($(rowObj).parent().parent().find(".invoicea").text());
+            $("#gift").val($(rowObj).parent().parent().find(".gif").text());
+            editStat = true;
+            currObj = rowObj;
+            totalDueAmount -= $(rowObj).parent().parent().find(".invoicea").text();
+        }
+
+        function addRow() {
+            if (editStat) {
+                $(currObj).parent().parent().find(".customere").text($("#CustomerID option:selected").text());
+                $(currObj).parent().parent().find(".invoice").text($("#invoiceno").val());
+                $(currObj).parent().parent().find(".invoicea").text($("#invoiceam").val());
+                $(currObj).parent().parent().find(".gif").text($("#gift").val());
+                totalDueAmount += parseFloat($("#invoiceam").val());
+                editStat = false;
+                currObj = null;
+            }
+            else {
+                totalDueAmount += parseInt($("#invoiceam").val());
+                $("#dataTable tbody").append(
+                    '<tr><td class="customer-id" style="display:none;">' + $("#CustomerID option:selected").val() + '</td>' +
+                    '<td class="customere">' + $("#CustomerID option:selected").text() + '</td>' +
+                    '<td class="invoice">' + $("#invoiceno").val() + '</td>' +
+                    '<td class="invoicea">' + $("#invoiceam").val() + '</td>' +
+                    '<td class="gif">' + $("#gift").val() + '</td>' +
+                    '<td><button id="edit" onclick="editRow(this);" class="btn btn-warning btn-sm">Edit </button> <button id="delete" onclick="delRow(this);"  class="btn btn-danger btn-sm">Delete </button>  </td></tr>'
+                );
+                console.log(totalDueAmount);
+            }
+            document.getElementById("total-amount").innerText = totalDueAmount;
+        }
+
+            function delRow(rowObj) {
+                var amount = $(rowObj).parent().parent().find(".invoicea").text();
+                totalDueAmount -= amount;
+                document.getElementById("total-amount").innerText = totalDueAmount;
+                $(rowObj).parent().parent().remove();
+            }
+
+            function save() {
+                var rows = [];
+                var table = document.getElementById("dataTable");
+
+                for (var i = 1, row; row = table.rows[i]; i++) {
+
+                    if (table.rows.length == i + 1) {
+                        break;
+                    }
+                    var rowData = {
+                        'CustomerID': row.cells[0].innerText,
+                        'InvoiceNumber': row.cells[2].innerText,
+                        'InvoiceAmount': row.cells[3].innerText,
+                        'GiftItem': row.cells[4].innerText,
+                    };
+                    rows.push(rowData);
+                }
+                console.log(rows);
+
+                var inputData = {
+                    'SalesRegister': {
+                        'ID': $("#salereg-id").val(),
+                        'From': $("#from-date").val(),
+                        'To': $("#to-date").val(),
+                        'RegistrationDate': $("#reg-date").val(),
+                        'DsrID': $("#DsrID option:selected").val(),
+                        'SrID': $("#SrID option:selected").val(),
+                        'ManufacturerID': $("#ManufacturerID option:selected").val(),
+                        'AreaID': $("#AreaID option:selected").val(),
+                        'ProductID': $("#products option:selected").val(),
+                        'TotalInvoiceAmount': $("#totinvoice").val()
+                    },
+                    'SalesRegisterDetails': rows
+                };
+
+                $.post('/SalesRegisters/editSalesRegister', inputData,
+                    function (data, status) {
+                        if (data.success) {
+                            alert("Operation Successful.");
+                            window.location.href = "/SalesRegisters";
+                        }
+                    });
+            }
+
+    </script>
+}
+

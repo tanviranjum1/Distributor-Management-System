@@ -58,37 +58,37 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                National ID
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Contact)
             </th>
             <th>
                 Address
+            </th>
+            <th>
+                National ID
             </th>
             <th></th>
         </tr>
 
         @foreach (var item in Model.DsrsList)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NationalID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Contact)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td class="hidden-print">
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }, new { @class = "btn btn-warning btn-xs" }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ID }, new { @class = "btn btn-danger btn-xs", @onclick = "return confirm('Are you sure to delete?');" })
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Contact)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NationalID)
+            </td>
+            <td class="hidden-print">
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }, new { @class = "btn btn-warning btn-xs" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID }, new { @class = "btn btn-danger btn-xs", @onclick = "return confirm('Are you sure to delete?');" })
+            </td>
+        </tr>
         }
     </table>
 </div>

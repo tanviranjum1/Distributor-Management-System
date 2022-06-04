@@ -11,7 +11,7 @@ namespace DistributorManagement.Repositories
     {
         private DistributorManagementContext db = new DistributorManagementContext();
 
-        public List<CollectionItemDetailViewModel> getSalesRegisterDetails(int? saleRegisterId, int? dsrId, bool dueOnly)
+        public List<CollectionItemDetailViewModel> getSalesRegisterDetails(int? saleRegisterId, int? dsrId, bool dueOnly, int? customerId)
         {
             var SalesRegisterDetails = db.SalesRegisterDetails.AsQueryable();
 
@@ -24,6 +24,11 @@ namespace DistributorManagement.Repositories
             {
                 SalesRegisterDetails = SalesRegisterDetails.Where(r => r.SalesRegister.DsrID == dsrId).AsQueryable();
             }
+            if (customerId != null)
+            {
+                SalesRegisterDetails = SalesRegisterDetails.Where(r => r.CustomerID == customerId).AsQueryable();
+            }
+
 
             if (dueOnly)
             {
@@ -54,7 +59,7 @@ namespace DistributorManagement.Repositories
                                            : 0,
                       CollectionAmount = 0,
                       ReturnAmount = 0
-                  } ).ToList();
+                  }).ToList();
             }
             else
             {
@@ -77,8 +82,9 @@ namespace DistributorManagement.Repositories
                                            : 0,
                       CollectionAmount = 0,
                       ReturnAmount = 0
-                  } ).ToList();
+                  }).ToList();
             }
         }
     }
 }
+

@@ -31,11 +31,14 @@ namespace DistributorManagement.Controllers
         public ActionResult Index(ExpenseHeadFilterViewModel ehfvm)
         {
             ViewBag.ExpenseHeadID = new SelectList(db.ExpenseHead, "ID", "Name");
+            var ExpenseHeads = db.ExpenseHead.AsQueryable();
 
             if (ehfvm.ExpenseHeadID != null)
             {
-                ehfvm.ExpenseHeadList = db.ExpenseHead.Where(r => r.ID == ehfvm.ExpenseHeadID).ToList();
+                ExpenseHeads = ExpenseHeads.Where(r => r.ID == ehfvm.ExpenseHeadID).AsQueryable();
             }
+            ehfvm.ExpenseHeadList = ExpenseHeads.ToList();
+
             return View(ehfvm);
         }
 

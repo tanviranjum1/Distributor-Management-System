@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -168,30 +169,15 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="LoginInfo.cs" />
-    <Compile Include="Migrations\202205221050048_saleRegMod.cs" />
-    <Compile Include="Migrations\202205221050048_saleRegMod.Designer.cs">
-      <DependentUpon>202205221050048_saleRegMod.cs</DependentUpon>
+    <Compile Include="Migrations\202206021528362_Initial.cs" />
+    <Compile Include="Migrations\202206021528362_Initial.Designer.cs">
+      <DependentUpon>202206021528362_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202205240536277_manufac added to retailerprod.cs" />
-    <Compile Include="Migrations\202205240536277_manufac added to retailerprod.Designer.cs">
-      <DependentUpon>202205240536277_manufac added to retailerprod.cs</DependentUpon>
+    <Compile Include="Migrations\202206021530315_New.cs" />
+    <Compile Include="Migrations\202206021530315_New.Designer.cs">
+      <DependentUpon>202206021530315_New.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202205240555546_manufac removed retailerprod.cs" />
-    <Compile Include="Migrations\202205240555546_manufac removed retailerprod.Designer.cs">
-      <DependentUpon>202205240555546_manufac removed retailerprod.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202205260620369_Manu updated.cs" />
-    <Compile Include="Migrations\202205260620369_Manu updated.Designer.cs">
-      <DependentUpon>202205260620369_Manu updated.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202206010542590_total invoice amt.cs" />
-    <Compile Include="Migrations\202206010542590_total invoice amt.Designer.cs">
-      <DependentUpon>202206010542590_total invoice amt.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202206020946255_srstypechange.cs" />
-    <Compile Include="Migrations\202206020946255_srstypechange.Designer.cs">
-      <DependentUpon>202206020946255_srstypechange.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Repositories\CommonDataRepository.cs" />
     <Compile Include="Repositories\CollectionDataRepository.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -211,15 +197,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202205190731426_init.cs" />
-    <Compile Include="Migrations\202205190731426_init.Designer.cs">
-      <DependentUpon>202205190731426_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202205210708055_expensealtered.cs" />
-    <Compile Include="Migrations\202205210708055_expensealtered.Designer.cs">
-      <DependentUpon>202205210708055_expensealtered.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Area.cs" />
     <Compile Include="Models\Collection.cs" />
@@ -373,29 +350,11 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202205190731426_init.resx">
-      <DependentUpon>202205190731426_init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202206021528362_Initial.resx">
+      <DependentUpon>202206021528362_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202205210708055_expensealtered.resx">
-      <DependentUpon>202205210708055_expensealtered.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202205221050048_saleRegMod.resx">
-      <DependentUpon>202205221050048_saleRegMod.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202205240536277_manufac added to retailerprod.resx">
-      <DependentUpon>202205240536277_manufac added to retailerprod.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202205240555546_manufac removed retailerprod.resx">
-      <DependentUpon>202205240555546_manufac removed retailerprod.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202205260620369_Manu updated.resx">
-      <DependentUpon>202205260620369_Manu updated.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202206010542590_total invoice amt.resx">
-      <DependentUpon>202206010542590_total invoice amt.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202206020946255_srstypechange.resx">
-      <DependentUpon>202206020946255_srstypechange.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202206021530315_New.resx">
+      <DependentUpon>202206021530315_New.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

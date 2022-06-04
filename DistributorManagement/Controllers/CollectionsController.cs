@@ -19,9 +19,9 @@ namespace DistributorManagement.Controllers
 
 
         //get salesRegisterDetails upon selection of dropdown value using Ajax.
-        public JsonResult getSalesRegisterDetails(int? saleRegisterId, int? dsrId, bool dueOnly)
+        public JsonResult getSalesRegisterDetails(int? saleRegisterId, int? dsrId, bool dueOnly, int? customerId)
         {
-            var srd = collectionRepo.getSalesRegisterDetails(saleRegisterId, dsrId, dueOnly);
+            var srd = collectionRepo.getSalesRegisterDetails(saleRegisterId, dsrId, dueOnly, customerId);
             return Json(new { SalesRegisterDetail = srd }, JsonRequestBehavior.AllowGet);
         }
 
@@ -124,6 +124,7 @@ namespace DistributorManagement.Controllers
         // GET: Collections/Create
         public ActionResult Create()
         {
+            ViewBag.CustomerID = new SelectList(db.Customers, "ID", "Name");
             ViewBag.DsrID = new SelectList(db.Dsrs, "ID", "Name");
             ViewBag.ExpenseHeadID = new SelectList(db.ExpenseHead, "ID", "Name");
             ViewBag.ManufacturerID = new SelectList(db.Manufacturers, "ID", "Name");
@@ -172,7 +173,7 @@ namespace DistributorManagement.Controllers
 
             cvm.Collection = db.Collection.Find(id);
             cvm.CollectionExpenses = db.CollectionExpense.Where(f => f.CollectionID == id).ToList();
-         
+
             cvm.CollectionItemDetails = db.CollectionDetails.Where(r => r.CollectionID == id).
                      Select(r =>
                       new CollectionItemDetailViewModel()
@@ -195,16 +196,16 @@ namespace DistributorManagement.Controllers
                           ReturnAmount = r.ReturnAmount
                       }).ToList();
 
-                if (cvm.Collection == null)
-                {
-                    return HttpNotFound();
-                }
-                ViewBag.DsrID = new SelectList(db.Dsrs, "ID", "Name", cvm.Collection.DsrID);
-                ViewBag.ExpenseHeadID = new SelectList(db.ExpenseHead, "ID", "Name");
-                ViewBag.ManufacturerID = new SelectList(db.Manufacturers, "ID", "Name");
-                ViewBag.ProductID = new SelectList(db.Product, "ID", "Name");
+            if (cvm.Collection == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.DsrID = new SelectList(db.Dsrs, "ID", "Name", cvm.Collection.DsrID);
+            ViewBag.ExpenseHeadID = new SelectList(db.ExpenseHead, "ID", "Name");
+            ViewBag.ManufacturerID = new SelectList(db.Manufacturers, "ID", "Name");
+            ViewBag.ProductID = new SelectList(db.Product, "ID", "Name");
 
-                return View(cvm);
+            return View(cvm);
         }
 
 
@@ -212,7 +213,7 @@ namespace DistributorManagement.Controllers
         [HttpPost]
         public JsonResult editCollections(CollectionsViewModel cvm)
         {
-            Collection collection = db.Collection.Find(cvm.Collection.ID); 
+            Collection collection = db.Collection.Find(cvm.Collection.ID);
             collection.Date = cvm.Collection.Date;
             collection.DsrID = cvm.Collection.DsrID;
 
@@ -297,3 +298,5 @@ namespace DistributorManagement.Controllers
         }
     }
 }
+
+

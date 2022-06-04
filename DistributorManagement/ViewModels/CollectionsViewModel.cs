@@ -25,6 +25,16 @@ namespace DistributorManagement.ViewModels
         public int ID { get; set; }
         public int CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
+        public string RegistrationDateFormatted {
+            get
+            {
+                return RegistrationDateFormatted;
+            }
+            set
+            {
+                RegistrationDateFormatted = SalesRegister.RegistrationDate.ToString("dd-mmm-YYYY");
+            }
+        }
         public string InvoiceNumber { get; set; }
         public decimal InvoiceAmount { get; set; }
         public string GiftItem { get; set; }

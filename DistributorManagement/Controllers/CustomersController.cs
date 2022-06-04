@@ -168,6 +168,11 @@ namespace DistributorManagement.Controllers
             }
             try
             {
+                var lists = db.RetailerProduct.Where(a => a.CustomerID == id).ToList();
+                foreach (var item in lists)
+                    db.RetailerProduct.Remove(item);
+                db.SaveChanges();
+
                 db.Customers.Remove(customer);
                 db.SaveChanges();
                 return RedirectToAction("Index");

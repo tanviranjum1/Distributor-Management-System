@@ -109,7 +109,7 @@ namespace DistributorManagement.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch (Exception e)
+            catch(Exception)
             {
                 return RedirectToAction("Index", new { err=1 });
             }

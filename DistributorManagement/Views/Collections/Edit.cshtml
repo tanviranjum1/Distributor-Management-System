@@ -48,30 +48,38 @@
     }
 
 
-<table id="dataTable" style="border-top: 2px solid gray; margin: auto; text-align:center; font-weight: bold; " class="table table-bordered table-condensed">
-    <tr>
-        <th style="text-align:left">Invoice No.</th>
-        <th style="text-align:left">Retailer</th>
-        <th style="text-align:left">Sale Reg ID</th>
-        <th style="display:none">Sale Reg Details ID</th>
-        <th style="text-align:left">Gift</th>
-        <th style="text-align:left">Area</th>
-        <th style="text-align:right">Invoice Amount</th>
-        <th style="text-align:right">Prev. Collection Amount</th>
-        <th style="text-align:right">Collection Amount</th>
-        <th style="text-align:right">Prev. Return Amount</th>
-        <th style="text-align:right">Return Amount</th>
-        <th style="text-align:right">Due Amount</th>
-    </tr>
-   
-    @foreach (var item in Model.CollectionItemDetails)
-    {
+    <table id="dataTable" style="margin: auto; text-align:center; font-weight: bold; " class="table table-bordered table-condensed">
+        <tr>
+            <th style="text-align:left">Invoice No.</th>
+            <th style="text-align:left">Retailer</th>
+            <th style="text-align:left">Sale Reg ID</th>
+            <th style="display:none">Sale Reg Details ID</th>
+            @*<th style="text-align:left">Gift</th>*@
+            <th style="text-align:left">Area</th>
+            <th style="text-align:right">Invoice Amount</th>
+            <th style="text-align:right">Prev. Collection Amount</th>
+            <th style="text-align:right">Collection Amount</th>
+            <th style="text-align:right">Prev. Return Amount</th>
+            <th style="text-align:right">Return Amount</th>
+            <th style="text-align:right">Due Amount</th>
+            <th style="text-align:center">Payment Type</th>
+            <th style="text-align:left">Description</th>
+            <th style="text-align:left; display:none">Bank</th>
+            <th style="text-align:left; display:none">Cheque</th>
+            <th style="text-align:left; display:none">Details</th>
+            <th style="text-align:left; display:none">Date</th>
+
+
+        </tr>
+
+        @foreach (var item in Model.CollectionItemDetails)
+        {
         <tr class="row-data">
             <td>@item.InvoiceNumber</td>
             <td>@item.Customer.Name</td>
             <td>@item.SalesRegisterID</td>
             <td style="display:none">@item.ID</td>
-            <td>@item.GiftItem</td>
+            @*<td>@item.GiftItem</td>*@
             <td>@item.SalesRegister.Area.Name</td>
             <td class="invoiceamount" style="text-align:right">@item.InvoiceAmount</td>
             <td style="text-align:right">@(item.PreviousCollectionAmount - item.CollectionAmount)</td>
@@ -79,19 +87,24 @@
             <td style="text-align:right">@(item.PreviousReturnAmount - item.ReturnAmount)</td>
             <td id="returninput" style="text-align:right" contenteditable="true" onkeyup="returnEvent(this)">@item.ReturnAmount</td>
             <td class="due" style="text-align:right">@(item.InvoiceAmount - item.CollectionAmount - item.ReturnAmount)</td>
+            <td data-toggle="modal" data-target="#myModal" onclick="getRowForEdit(this)" class="row-edit mr-2 btn-info"></td>
+            <td class="desc">@(item.BankInformation+","+item.ChequeInformation+","+item.Details+","+item.HonorDate)</td>
+            <td class="bank" style="display:none">@item.BankInformation</td>
+            <td class="cheque" style="display:none">@item.ChequeInformation</td>
+            <td class="det" style="display:none">@item.Details</td>
+            <td class="honordate" style="display:none">@item.HonorDate</td>
         </tr>
-    }
-
-    <tr class="row-data">
-        <td colspan="5"> Total : </td>
-        <td style="text-align:right">  @Model.CollectionItemDetails.Sum(r => r.InvoiceAmount)</td>
-        <td style="text-align:right">@Model.CollectionItemDetails.Sum(r => r.PreviousCollectionAmount - r.CollectionAmount)</td>
-        <td style="text-align:right" id="collectionsum">@Model.CollectionItemDetails.Sum(r => r.CollectionAmount)</td>
-        <td style="text-align:right">@Model.CollectionItemDetails.Sum(r => r.PreviousReturnAmount - r.ReturnAmount)</td>
-        <td style="text-align:right" id="returnsum">@Model.CollectionItemDetails.Sum(r => r.ReturnAmount)</td>
-        <td id="duesum" style="text-align:right">@Model.CollectionItemDetails.Sum(r => r.InvoiceAmount - r.CollectionAmount - r.ReturnAmount)</td>
-    </tr>
-</table>
+        }
+        <tr class="row-data">
+            <td colspan="4"> Total : </td>
+            <td style="text-align:right">  @Model.CollectionItemDetails.Sum(r => r.InvoiceAmount)</td>
+            <td style="text-align:right">@Model.CollectionItemDetails.Sum(r => r.PreviousCollectionAmount - r.CollectionAmount)</td>
+            <td style="text-align:right" id="collectionsum">@Model.CollectionItemDetails.Sum(r => r.CollectionAmount)</td>
+            <td style="text-align:right">@Model.CollectionItemDetails.Sum(r => r.PreviousReturnAmount - r.ReturnAmount)</td>
+            <td style="text-align:right" id="returnsum">@Model.CollectionItemDetails.Sum(r => r.ReturnAmount)</td>
+            <td id="duesum" style="text-align:right">@Model.CollectionItemDetails.Sum(r => r.InvoiceAmount - r.CollectionAmount - r.ReturnAmount)</td>
+        </tr>
+    </table>
 <br/>
 <br/>
 
@@ -211,10 +224,10 @@
             $("#amount").val($(rowObj).parent().parent().find(".am").text());
 
             var dpvalue2 = $(rowObj).parent().parent().find(".manu-id").text();
-            $("#manufacturers").val(dpvalue).trigger('change');
+            $("#manufacturers").val(dpvalue2).trigger('change');
 
             var dpvalue3 = $(rowObj).parent().parent().find(".prod-id").text();
-            $("#products").val(dpvalue).trigger('change');
+            $("#products").val(dpvalue3).trigger('change');
 
             editStat = true;
             currObj = rowObj;

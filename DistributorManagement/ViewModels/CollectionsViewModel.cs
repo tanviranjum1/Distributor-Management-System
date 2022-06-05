@@ -1,8 +1,6 @@
 ﻿using DistributorManagement.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace DistributorManagement.ViewModels
 {
@@ -20,19 +18,16 @@ namespace DistributorManagement.ViewModels
         public List<CollectionItemDetailViewModel> CollectionItemDetails { get; set; }
     }
 
-    public class CollectionItemDetailViewModel 
+    public class CollectionItemDetailViewModel
     {
         public int ID { get; set; }
         public int CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
-        public string RegistrationDateFormatted {
+        public string RegistrationDateFormatted
+        {
             get
             {
-                return RegistrationDateFormatted;
-            }
-            set
-            {
-                RegistrationDateFormatted = SalesRegister.RegistrationDate.ToString("dd-mmm-YYYY");
+                return SalesRegister.RegistrationDate.ToString("dd-MMM-yyyy");
             }
         }
         public string InvoiceNumber { get; set; }
@@ -44,6 +39,11 @@ namespace DistributorManagement.ViewModels
         public decimal PreviousReturnAmount { get; set; }
         public decimal CollectionAmount { get; set; }
         public decimal ReturnAmount { get; set; }
+        public PaymentMethod? PaymentType { get; set; }
+        public string BankInformation { get; set; }
+        public string ChequeInformation { get; set; }
+        public string Details { get; set; }
+        public DateTime? HonorDate { get; set; }
     }
 
 }

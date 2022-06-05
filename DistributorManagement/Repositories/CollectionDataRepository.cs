@@ -1,9 +1,7 @@
 ﻿using DistributorManagement.Models;
 using DistributorManagement.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace DistributorManagement.Repositories
 {
@@ -19,7 +17,6 @@ namespace DistributorManagement.Repositories
             {
                 SalesRegisterDetails = SalesRegisterDetails.Where(r => r.SalesRegisterID == saleRegisterId).AsQueryable();
             }
-
             if (dsrId != null)
             {
                 SalesRegisterDetails = SalesRegisterDetails.Where(r => r.SalesRegister.DsrID == dsrId).AsQueryable();
@@ -58,7 +55,8 @@ namespace DistributorManagement.Repositories
                                            db.CollectionDetails.Where(s => s.SalesRegisterDetailsID == r.ID).Sum(s => s.ReturnAmount)
                                            : 0,
                       CollectionAmount = 0,
-                      ReturnAmount = 0
+                      ReturnAmount = 0,
+                      
                   }).ToList();
             }
             else

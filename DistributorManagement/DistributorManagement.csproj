@@ -177,6 +177,10 @@
     <Compile Include="Migrations\202206021530315_New.Designer.cs">
       <DependentUpon>202206021530315_New.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202206051610370_Coll Controller.cs" />
+    <Compile Include="Migrations\202206051610370_Coll Controller.Designer.cs">
+      <DependentUpon>202206051610370_Coll Controller.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Repositories\CommonDataRepository.cs" />
     <Compile Include="Repositories\CollectionDataRepository.cs" />
@@ -355,6 +359,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202206021530315_New.resx">
       <DependentUpon>202206021530315_New.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202206051610370_Coll Controller.resx">
+      <DependentUpon>202206051610370_Coll Controller.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

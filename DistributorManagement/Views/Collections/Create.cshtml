@@ -10,24 +10,23 @@
         font-weight: normal;
     }
 
-    .pmode{
-        cursor:pointer;
+    .row-edit {
+        cursor: pointer;
     }
-
 </style>
 
 
-<h2 style="text-align:center;" class="text-info">Collection Entry</h2>
+<h2 style="text-align:center;">Collection Entry</h2>
 <hr />
 <br />
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <div class="row alert alert-info " role="alert">
+    <div class="row alert alert-info" role="alert">
         <div class="form-horizontal">
             <div class="row">
-                <div class="col-md-4" >
+                <div class="col-md-4">
                     <div class="form-group">
                         @Html.Label("Date", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
@@ -68,12 +67,12 @@
                     </div>
                 </div>
 
-                <div class="col-md-4" >
+                <div class="col-md-4">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="form-group">
                         @Html.Label("Retailer", htmlAttributes: new { @class = "control-label col-md-4" })
                         <div class="col-md-8">
-                            @Html.DropDownList("DsrID", null, String.Empty, htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownList("CustomerID", null, String.Empty, htmlAttributes: new { @class = "form-control" })
                         </div>
                     </div>
                 </div>
@@ -92,7 +91,7 @@
 <br />
 
 
-<table id="dataTable" style="margin: auto;  text-align:center; font-weight: bold;" class="table table-bordered table-condensed">
+<table id="dataTable" style="font-weight: bold;" class="table table-bordered table-condensed">
     <tr>
         <th style="text-align:left">Sale Reg. ID</th>
         <th style="text-align:left">Date</th>
@@ -109,10 +108,10 @@
         <th style="text-align:right">Due Amount</th>
         <th style="text-align:center">Payment Type</th>
         <th style="text-align:left">Description</th>
-        <th style="text-align:left">Bank</th>
-        <th style="text-align:left">Cheque</th>
-        <th style="text-align:left">Details</th>
-        <th style="text-align:left">Date</th>
+        <th style="text-align:left; display:none">Bank</th>
+        <th style="text-align:left; display:none">Cheque</th>
+        <th style="text-align:left; display:none">Details</th>
+        <th style="text-align:left; display:none">Date</th>
     </tr>
 </table>
 <br />
@@ -197,122 +196,52 @@
 <br>
 <br />
 
-
-
-
-@*<div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            @*<div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+            <div class="modal-header">
+                <h4 class="modal-title">Payment Mode</h4>
+            </div>
             <h1 class="ui-state-error-text" id="err" hidden>Software Cannot be empty</h1>
             <div class="modal-body">
-                <form class="w-100 mx-auto pl-lg-5" style=" margin-top:65px;">
-                    <div class="row">
-
-                        <div class="form-group col-5 ml-4">
-                            <label for="recipient-name" class="col-form-label"><b>Software:</b></label>
-                            @Html.DropDownList("SoftwareId", (MultiSelectList)ViewBag.SoftwareId, new { @multiple = "multiple", style = "width: 270px;", @class = "form-control", @id = "eSoftwares" })
+                <div class="form-group col-5  ml-4">
+                    <label for="message-text" class="col-form-label"><b>Payment Type:</b></label>
+                    @Html.DropDownList("PaymentID", null, String.Empty, htmlAttributes: new { @class = "form-control" })
+                    <hr />
+                </div>
+                <div id="cheque-container" style="display:none">
+                    <form class="w-100 mx-auto pl-lg-5" style=" margin-top:65px;">
+                        <div class="row">
+                            <div class="form-group col-5 ml-4">
+                                <label for="message-text" class="col-form-label"><b> Bank Information: </b></label>
+                                <textarea class="form-control " id="editedBank"></textarea>
+                            </div>
+                            <div class="form-group col-5 ml-4">
+                                <label for="message-text" class="col-form-label"><b> Cheque Information: </b></label>
+                                <textarea class="form-control " id="editedCheque"></textarea>
+                            </div>
                         </div>
-                        <div class="form-group col-5  ml-4">
-                            <label for="message-text" class="col-form-label"><b>Software Category:</b></label>
-                            @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control", style = "width: 270px;", @id = "eCategoryId" })
-
+                        <div class="row">
+                            <div class="form-group col-5 ml-4">
+                                <label for="message-text" class="col-form-label"><b> Details: </b></label>
+                                <textarea class="form-control " id="editedDetails"></textarea>
+                            </div>
+                            <div class="form-group col-5 ml-4">
+                                <label for="message-text" class="col-form-label"><b>Honor Date:</b></label>
+                                <input class="form-control  " id="editedHonorDate" type="date" />
+                            </div>
                         </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-5 ml-4">
-                            <label for="message-text" class="col-form-label"><b>Requirement:</b> (<span> Start Marked </span> @Html.CheckBoxFor(model => model.StarMarked, new { @id = "starMarked" }) )</label>
-                            <textarea class="form-control " required id="EditedRequirement"></textarea>
-                            <input type="text" readonly hidden id="RequirementDetailIdToBeSent" />
-                        </div>
-
-                        <div class="form-group col-5 ml-4">
-                            <label for="message-text" class="col-form-label"><b> Description: </b></label>
-                            <textarea class="form-control " id="EditedDescription"></textarea>
-                        </div>
-
-
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-5  ml-4">
-                            <label for="message-text" class="col-form-label"><b>Requirement Type: </b></label>
-                            @Html.DropDownList("ReqTypeId", null, "", htmlAttributes: new { @class = "form-control", @id = "rType" })
-                        </div>
-                        <div class="form-group col-5 ml-4">
-                            <label for="message-text" class="col-form-label"><b>JobHolder: </b></label>
-                            @Html.DropDownList("JobHolders", null, "", htmlAttributes: new { @class = "form-control", style = "width: 270px;", @id = "jobHolder" })
-                        </div>
-
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-5 ml-4">
-                            <label for="message-text" class="col-form-label"><b>Status: </b></label>
-                            @Html.EnumDropDownListFor(model => model.Status, new { @class = "form-control", @id = "rStatus" })
-                        </div>
-                        <div class="form-group col-5 ml-4">
-                            <label for="message-text" class="col-form-label"><b>Hourly Rate </b></label>
-                            @Html.EditorFor(model => model.JobHolder.HourlyCost, new { htmlAttributes = new { @class = "form-control", style = "width: 270px;", @id = "HourlyCost" } })
-
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-5 ml-4">
-                            <label for="message-text" class="col-form-label"><b>Assigned At: </b></label>
-                            @*<textarea class="form-control" id="message-text"></textarea>
-                            @Html.EnumDropDownListFor(model => model.Status, " ", new { @class = "form-control", @id = "currentStatus" })
-                        </div>
-
-                        <div class="form-group col-5 ml-4">
-                            <label for="message-text" class="col-form-label"><b>Target To:</b></label>
-                            @Html.EnumDropDownListFor(model => model.Status, " ", new { @class = "form-control", @id = "targetStatus" })
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-
-                        <div class="form-group col-5 ml-4">
-                            <label for="message-text" class="col-form-label"><b>Assign Date:</b></label>
-                            <input class="form-control  " id="EditedAssignDate" type="date" />
-                        </div>
-                        <div class="form-group col-5  ml-4">
-                            <label for="message-text" class="col-form-label"><b>DeadLine: </b></label>
-                            <input type="date" class="form-control " id="EditedDeadLine" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-5 ml-4">
-                            <label for="message-text" class="col-form-label"><b>Workhours:</b></label>
-                            <input type="test" class="form-control " id="EditedWorkhours" />
-                        </div>
-
-                        <div>
-                            <input type="text" hidden id="CategoryIDVal" />
-                        </div>
-
-                    </div>
-
-                </form>
+                    </form>
+                </div>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" onclick="saveEdited()">Save</button>
             </div>
         </div>
     </div>
-
-    </div>*@
-
-
-
+</div>
 
 <div class="form-group" style="text-align:center">
     <input type="submit" value="Save" class="btn btn-success" id="save" onclick="save()" />
@@ -334,6 +263,7 @@
 
         var editStat = false;
         var currObj = null;
+        var collCurrObj = null;
         var prodValueForEditExpense = null;
 
         function editRow(rowObj) {
@@ -388,7 +318,6 @@
                     );
                 }
                 document.getElementById("total-amount").innerText = totalamount;
-
             }
         }
 
@@ -404,9 +333,6 @@
 
         function find() {
 
-            console.log($("#SaleregID").val());
-            console.log($("#DsrID").val());
-            console.log($("#CustomerID").val());
             $("#dataTable .row-data").remove();
             $.get('/Collections/getSalesRegisterDetails?saleRegisterId=' + $("#SaleregID").val()
                 + '&&dsrId=' + $("#DsrID").val()
@@ -420,6 +346,7 @@
                     for (i = 0; i < data.SalesRegisterDetail.length; i++) {
                         console.log(data.SalesRegisterDetail[i].SalesRegister);
                         var dues = (parseFloat(data.SalesRegisterDetail[i].InvoiceAmount) - (parseFloat(data.SalesRegisterDetail[i].PreviousCollectionAmount) + parseFloat(data.SalesRegisterDetail[i].PreviousReturnAmount)))
+                        const d = new Date();
                         $("#dataTable").append(
                             '<tr class="row-data"><td style="text-align:left">' + data.SalesRegisterDetail[i].SalesRegisterID + '</td>' +
                             '<td style="text-align:left">' + data.SalesRegisterDetail[i].RegistrationDateFormatted + '</td>' +
@@ -434,17 +361,16 @@
                             '<td style="text-align:right" >' + data.SalesRegisterDetail[i].PreviousReturnAmount + '</td>' +
                             '<td id="returninput"  style="text-align:right" contenteditable="true"  onkeyup="returnEvent(this)">' + 0 + '</td>' +
                             '<td class="due" style="text-align:right">' + dues + '</td>' +
-                            '<td data-toggle="modal" data-target="#myModal" onclick="getRowForEdit(this)" class="pmode mr-2  btn-success"></td>' +
-                            '<td>' + "bla bla" + '</td>' +
-                            '<td>' + "Pubali Bank Branch3" + '</td>' + 
-                            '<td>' + "Ref123123" + '</td>' +
-                            '<td>' + "blaaaaa" + '</td>' +
-                            '<td>' + "12 Oct 2021" + '</td></tr>'
+                            '<td data-toggle="modal" data-target="#myModal" onclick="getRowForEdit(this)" class="row-edit mr-2 btn-info" >' + "" + '</td>' +
+                            '<td class="desc">' + "" + '</td>' +
+                            '<td class="bank" style= "display:none">' + "" + '</td>' +
+                            '<td class="cheque" style= "display:none">' + "" + '</td>' +
+                            '<td class="det"  style= "display:none">' + "" + '</td>' +
+                            '<td class="honordate" style= "display:none" >' + "" + '</td></tr>'
                         );
                         invoicesum += parseFloat(data.SalesRegisterDetail[i].InvoiceAmount);
                         prevcolsum += parseFloat(data.SalesRegisterDetail[i].PreviousCollectionAmount);
                         prevretsum += parseFloat(data.SalesRegisterDetail[i].PreviousReturnAmount);
-                        console.log(dues);
                         duesum += dues;
                     }
                     $("#dataTable").append('<tr class="row-data" >' +
@@ -458,58 +384,49 @@
                         '</tr>');
                 });
         }
+        const bankInfo = document.getElementById('editedBank');
+        const chequeInfo = document.getElementById('editedCheque');
+        const details = document.getElementById('editedDetails');
+        const date = document.getElementById('editedHonorDate');
+        const amount = document.getElementById('editedAmount');
 
         function getRowForEdit(obj) {
-            
-            alert("here we go");
+            bankInfo.value = $(obj).parent().parent().find('.bank').text();
+            chequeInfo.value = $(obj).parent().parent().find('.cheque').text();
+            details.value = $(obj).parent().parent().find('.det').text();
+            date.value = $(obj).parent().parent().find('.honordate').text();
+            collCurrObj = obj;
         }
 
+        function saveEdited() {
+            if ($("#PaymentID option:selected").text() == "Cheque") {
+                $(collCurrObj).parent().find('.row-edit').text($("#PaymentID option:selected").text());
+                $(collCurrObj).parent().find('.desc').text(bankInfo.value + "," + chequeInfo.value + "," + details.value + "," + date.value);
+                $(collCurrObj).parent().find('.bank').text(bankInfo.value);
+                $(collCurrObj).parent().find('.cheque').text(chequeInfo.value);
+                $(collCurrObj).parent().find('.det').text(details.value);
+                $(collCurrObj).parent().find('.honordate').text(date.value);
+            }
+            else {
+                $(collCurrObj).parent().find('.row-edit').text($("#PaymentID option:selected").text());
+            }
 
-        //function GetRowForEdit(obj) {
+            collCurrObj = null;
+        }
 
-        //    //alert($(obj).parent().parent().find(".StarMarkedTable").text())
+        const chequeContainer = document.getElementById("cheque-container");
 
-        //    GetSoftwares($(obj).parent().parent().find(".CategoryIdTable").text(), $(obj).parent().parent().find(".softwaresId").text());
-
-        //    TargetColObject = obj;
-
-        //    $("#eCategoryId").val($(obj).parent().parent().find(".CategoryIdTable").text()).trigger("change");
-
-        //    $("#EditedRequirement").val($(obj).parent().parent().find(".requirement").text());
-        //    $("#EditedDescription").val($(obj).parent().parent().find(".description").text());
-        //    $("#EditedWorkhours").val($(obj).parent().parent().find(".workhours").text());
-        //    $("#EditedAssignDate").val(getHtmDate($(obj).parent().parent().find(".AssignDate").text()));
-        //    $("#EditedDeadLine").val(getHtmDate($(obj).parent().parent().find(".DeadLine").text()));
-
-        //    $("#RequirementDetailIdToBeSent").val($(obj).parent().parent().find(".requirementDetailId").text());
-
-        //    $("#jobHolder").val($(obj).parent().parent().find(".jobHolderId").text()).trigger("change");
-
-        //    $("#HourlyCost").val($(obj).parent().parent().find(".hourlyCost").text());
-
-        //    $("#rType").val($(obj).parent().parent().find(".typeid").text()).trigger("change");
-        //    $("#rStatus").val($(obj).parent().parent().find(".statusid").text()).trigger("change");
-
-        //    //$("#starMarked").attr('checked', $(obj).parent().parent().find(".StarMarkedTable").text().toLowerCase());
-
-
-        //    if ($(obj).parent().parent().find(".StarMarkedTable").text() == '1') $("#starMarked").prop('checked', true);
-        //    else $("#starMarked").prop('checked', false);
-
-
-        //    if ($(obj).parent().parent().find(".CurrStatusId").text() != "-1") {
-        //        $("#currentStatus").val($(obj).parent().parent().find(".CurrStatusId").text()).trigger("change");
-        //    } else {
-        //        $("#currentStatus").val($(obj).parent().parent().find(".statusid").text());
-        //    }
-        //    if ($(obj).parent().parent().find(".TarStatusId").text() != "-1") {
-        //        $("#targetStatus").val($(obj).parent().parent().find(".TarStatusId").text()).trigger("change");
-        //    }
-
-        //    //alert($(obj).parent().parent().find(".softwaresId").text());
-
-        //}
-
+        $("#PaymentID").change(function () {
+            if ($("#PaymentID option:selected").text() == "") {
+                console.log("null state payment type");
+            }
+            else if ($("#PaymentID option:selected").text() == "Cash") {
+                chequeContainer.style.display = "none";
+            }
+            else {
+                chequeContainer.style.display = "block";
+            }
+        });
 
 
         $("#expenses").change(function () {
@@ -526,7 +443,6 @@
                     });
             }
         });
-
 
         $("#manufacturers").change(function () {
             if ($("#manufacturers option:selected").text() == "") {
@@ -561,24 +477,22 @@
 
         function collectEvent(rowObj) {
 
-            var invoiceam = parseInt($(rowObj).parent().find('td:eq(6)').text());
-            var prevcollectionam = parseInt($(rowObj).parent().find('td:eq(7)').text());
-            var collectionam = parseInt($(rowObj).parent().find('td:eq(8)').text());
-            var prevreturnam = parseInt($(rowObj).parent().find('td:eq(9)').text());
-            var returnam = parseInt($(rowObj).parent().find('td:eq(10)').text());
+            var invoiceam = parseInt($(rowObj).parent().find('td:eq(7)').text());
+            var prevcollectionam = parseInt($(rowObj).parent().find('td:eq(8)').text());
+            var collectionam = parseInt($(rowObj).parent().find('td:eq(9)').text());
+            var prevreturnam = parseInt($(rowObj).parent().find('td:eq(10)').text());
+            var returnam = parseInt($(rowObj).parent().find('td:eq(11)').text());
 
-            isValidWithError($(rowObj).parent().find('td:eq(8)'), 'Collection Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
+            isValidWithError($(rowObj).parent().find('td:eq(9)'), 'Collection Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
 
             if (returnam == 0) {
-                $(rowObj).parent().find('td:eq(11)').text(invoiceam - (collectionam + prevcollectionam + prevreturnam));
+                $(rowObj).parent().find('td:eq(12)').text(invoiceam - (collectionam + prevcollectionam + prevreturnam));
             }
             else {
-                $(rowObj).parent().find('td:eq(11)').text(invoiceam - (collectionam + returnam + prevcollectionam + prevreturnam));
+                $(rowObj).parent().find('td:eq(12)').text(invoiceam - (collectionam + returnam + prevcollectionam + prevreturnam));
             }
+            isValidWithError($(rowObj).parent().find('td:eq(12)'), 'Due Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
 
-            isValidWithError($(rowObj).parent().find('td:eq(11)'), 'Due Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
-
-            var rows = [];
             var table = document.getElementById("dataTable");
             var colsum = 0;
             var retsum = 0;
@@ -591,31 +505,30 @@
                     document.getElementById("duesum").innerText = duesum;
                     break;
                 }
-                colsum += parseInt(row.cells[8].innerText);
-                retsum += parseInt(row.cells[10].innerText);
-                duesum += parseInt(row.cells[11].innerText);
+                colsum += parseInt(row.cells[9].innerText);
+                retsum += parseInt(row.cells[11].innerText);
+                duesum += parseInt(row.cells[12].innerText);
             }
         }
 
         function returnEvent(rowObj) {
-            var invoiceam = parseInt($(rowObj).parent().find('td:eq(6)').text());
-            var prevcollectionam = parseInt($(rowObj).parent().find('td:eq(7)').text());
-            var collectionam = parseInt($(rowObj).parent().find('td:eq(8)').text());
-            var prevreturnam = parseInt($(rowObj).parent().find('td:eq(9)').text());
-            var returnam = parseInt($(rowObj).parent().find('td:eq(10)').text());
+            var invoiceam = parseInt($(rowObj).parent().find('td:eq(7)').text());
+            var prevcollectionam = parseInt($(rowObj).parent().find('td:eq(8)').text());
+            var collectionam = parseInt($(rowObj).parent().find('td:eq(9)').text());
+            var prevreturnam = parseInt($(rowObj).parent().find('td:eq(10)').text());
+            var returnam = parseInt($(rowObj).parent().find('td:eq(11)').text());
 
-            isValidWithError($(rowObj).parent().find('td:eq(10)'), 'Return Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
+            isValidWithError($(rowObj).parent().find('td:eq(11)'), 'Return Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
 
             if (returnam == 0) {
-                $(rowObj).parent().find('td:eq(11)').text(invoiceam - (collectionam + prevcollectionam + prevreturnam));
+                $(rowObj).parent().find('td:eq(12)').text(invoiceam - (collectionam + prevcollectionam + prevreturnam));
             }
             else {
-                $(rowObj).parent().find('td:eq(11)').text(invoiceam - (collectionam + returnam + prevcollectionam + prevreturnam));
+                $(rowObj).parent().find('td:eq(12)').text(invoiceam - (collectionam + returnam + prevcollectionam + prevreturnam));
             }
 
-            isValidWithError($(rowObj).parent().find('td:eq(11)'), 'Due Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
+            isValidWithError($(rowObj).parent().find('td:eq(12)'), 'Due Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
 
-            var rows = [];
             var table = document.getElementById("dataTable");
 
             var colsum = 0;
@@ -629,9 +542,9 @@
                     document.getElementById("duesum").innerText = duesum;
                     break;
                 }
-                colsum += parseInt(row.cells[8].innerText);
-                retsum += parseInt(row.cells[10].innerText);
-                duesum += parseInt(row.cells[11].innerText);
+                colsum += parseInt(row.cells[9].innerText);
+                retsum += parseInt(row.cells[11].innerText);
+                duesum += parseInt(row.cells[12].innerText);
             }
         }
 
@@ -704,18 +617,32 @@
                     if (table.rows.length == i + 1) {
                         break;
                     }
-                    var rowData = {
-                        'SalesRegisterDetailsID': row.cells[4].innerText,
-                        'CollectionAmount': row.cells[8].innerText,
-                        'ReturnAmount': row.cells[10].innerText,
-                    };
+                    if ($("#PaymentID option:selected").text() == "") {
+                        var rowData = {
+                            'SalesRegisterDetailsID': row.cells[4].innerText,
+                            'CollectionAmount': row.cells[8].innerText,
+                            'ReturnAmount': row.cells[10].innerText,
+                        };
+                    }
+                    else {
+                        var rowData = {
+                            'SalesRegisterDetailsID': row.cells[4].innerText,
+                            'CollectionAmount': row.cells[8].innerText,
+                            'ReturnAmount': row.cells[10].innerText,
+                            'PaymentType': row.cells[12].innerText,
+                            'BankInformation': row.cells[14].innerText,
+                            'ChequeInformation': row.cells[15].innerText,
+                            'Details': row.cells[16].innerText,
+                            'HonorDate': row.cells[17].innerText,
+                        };
+                    }
                     rows.push(rowData);
                 }
 
+                console.log(rows);
                 var rowsTwo = [];
 
                 $("#dataTableTwo tbody tr").each(function () {
-
                     var rowData = {
                         'ExpenseHeadID': $(this).find(".exp-id") ? $(this).find(".exp-id").text() : "",
                         'ManufacturerID': $(this).find(".manu-id").text() ? $(this).find(".manu-id").text() : "",
@@ -725,6 +652,7 @@
 
                     rowsTwo.push(rowData);
                 });
+
                 console.log(rowsTwo);
 
                 var inputData = {
@@ -747,6 +675,11 @@
     </script>
 
 }
+
+
+
+
+
 
 
 

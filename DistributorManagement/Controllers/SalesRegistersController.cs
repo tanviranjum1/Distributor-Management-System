@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DistributorManagement.Models;
+using DistributorManagement.Repositories;
+using DistributorManagement.ViewModels;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using DistributorManagement.Models;
-using DistributorManagement.ViewModels;
-using DistributorManagement.Repositories;
 
 namespace DistributorManagement.Controllers
 {
@@ -104,7 +102,7 @@ namespace DistributorManagement.Controllers
                 ManufacturerID = srvm.SalesRegister.ManufacturerID,
                 AreaID = srvm.SalesRegister.AreaID,
                 SrID = srvm.SalesRegister.SrID,
-                ProductID =srvm.SalesRegister.ProductID,
+                ProductID = srvm.SalesRegister.ProductID,
                 TotalInvoiceAmount = srvm.SalesRegister.TotalInvoiceAmount
             };
             db.SalesRegister.Add(salesRegister);
@@ -115,7 +113,7 @@ namespace DistributorManagement.Controllers
                 item.SalesRegisterID = salesRegister.ID;
                 db.SalesRegisterDetails.Add(item);
                 db.SaveChanges();
-            }  
+            }
             return Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
 
@@ -217,13 +215,14 @@ namespace DistributorManagement.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             svm.SalesRegister = db.SalesRegister.Find(id);
-            svm.CollectionItemDetails = collectionRepo.getSalesRegisterDetails(id, null, false);
+            svm.CollectionItemDetails = collectionRepo.getSalesRegisterDetails(id, null, false, null);
             if (svm.SalesRegister == null)
             {
                 return HttpNotFound();
             }
             return View(svm);
         }
+
 
         // GET: SalesRegisters/Delete/5
         public ActionResult Delete(int? id)
@@ -248,7 +247,7 @@ namespace DistributorManagement.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 return RedirectToAction("Index", new { err = 1 });
             }

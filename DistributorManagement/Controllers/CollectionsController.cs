@@ -1,14 +1,13 @@
-﻿using System;
+﻿using DistributorManagement.Models;
+using DistributorManagement.Repositories;
+using DistributorManagement.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using DistributorManagement.ViewModels;
-using DistributorManagement.Models;
-using DistributorManagement.Repositories;
 
 namespace DistributorManagement.Controllers
 {
@@ -112,7 +111,12 @@ namespace DistributorManagement.Controllers
                                   db.CollectionDetails.Where(s => s.SalesRegisterDetailsID == r.SalesRegisterDetailsID).Sum(s => s.ReturnAmount)
                                              : 0,
                         CollectionAmount = r.CollectionAmount,
-                        ReturnAmount = r.ReturnAmount
+                        ReturnAmount = r.ReturnAmount,
+                        PaymentType = r.PaymentType,
+                        BankInformation = r.BankInformation,
+                        ChequeInformation = r.ChequeInformation,
+                        Details = r.Details,
+                        HonorDate = r.HonorDate
                     }).ToList();
             if (cvm.Collection == null)
             {
@@ -128,6 +132,7 @@ namespace DistributorManagement.Controllers
             ViewBag.DsrID = new SelectList(db.Dsrs, "ID", "Name");
             ViewBag.ExpenseHeadID = new SelectList(db.ExpenseHead, "ID", "Name");
             ViewBag.ManufacturerID = new SelectList(db.Manufacturers, "ID", "Name");
+            ViewBag.PaymentID = new List<SelectListItem> { new SelectListItem { Value = "Cash", Text = "Cash" }, new SelectListItem { Value = "Cheque", Text = "Cheque" } };
             CollectionsViewModel cvm = new CollectionsViewModel();
             return View(cvm);
         }
@@ -193,7 +198,12 @@ namespace DistributorManagement.Controllers
                                     db.CollectionDetails.Where(s => s.SalesRegisterDetailsID == r.SalesRegisterDetailsID).Sum(s => s.ReturnAmount)
                                                : 0,
                           CollectionAmount = r.CollectionAmount,
-                          ReturnAmount = r.ReturnAmount
+                          ReturnAmount = r.ReturnAmount,
+                          PaymentType = r.PaymentType,
+                          BankInformation = r.BankInformation,
+                          ChequeInformation = r.ChequeInformation,
+                          Details = r.Details,
+                          HonorDate = r.HonorDate
                       }).ToList();
 
             if (cvm.Collection == null)
@@ -282,7 +292,7 @@ namespace DistributorManagement.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return RedirectToAction("Index", new { err = 1 });
             }

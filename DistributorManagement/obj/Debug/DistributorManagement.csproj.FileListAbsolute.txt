@@ -150,3 +150,4 @@ D:\My DMS Software\DistributorManagement\DistributorManagement\obj\Debug\Distrib
 D:\My DMS Software\DistributorManagement\DistributorManagement\obj\Debug\DistributorManagement.csproj.GenerateResource.cache
 D:\My DMS Software\DistributorManagement\DistributorManagement\obj\Debug\DistributorManagement.Migrations.New.resources
 D:\My DMS Software\DistributorManagement\DistributorManagement\obj\Debug\DistributorManagement.csprojAssemblyReference.cache
+D:\My DMS Software\DistributorManagement\DistributorManagement\obj\Debug\DistributorManagement.Migrations.CollController.resources

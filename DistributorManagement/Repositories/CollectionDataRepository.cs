@@ -56,7 +56,7 @@ namespace DistributorManagement.Repositories
                                            : 0,
                       CollectionAmount = 0,
                       ReturnAmount = 0,
-                      
+
                   }).ToList();
             }
             else
@@ -85,4 +85,7 @@ namespace DistributorManagement.Repositories
         }
     }
 }
+
+
+
 

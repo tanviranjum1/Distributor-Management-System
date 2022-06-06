@@ -214,6 +214,7 @@ namespace DistributorManagement.Controllers
             ViewBag.ExpenseHeadID = new SelectList(db.ExpenseHead, "ID", "Name");
             ViewBag.ManufacturerID = new SelectList(db.Manufacturers, "ID", "Name");
             ViewBag.ProductID = new SelectList(db.Product, "ID", "Name");
+            ViewBag.PaymentID = new List<SelectListItem> { new SelectListItem { Value = "Cash", Text = "Cash" }, new SelectListItem { Value = "Cheque", Text = "Cheque" } };
 
             return View(cvm);
         }
@@ -308,5 +309,10 @@ namespace DistributorManagement.Controllers
         }
     }
 }
+
+
+
+
+
 
 

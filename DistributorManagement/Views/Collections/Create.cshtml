@@ -1,6 +1,5 @@
 ﻿@model DistributorManagement.ViewModels.CollectionsViewModel
 
-
 @{
     ViewBag.Title = "Collection Entry";
 }
@@ -195,6 +194,7 @@
 </table>
 <br>
 <br />
+
 
 <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -477,21 +477,21 @@
 
         function collectEvent(rowObj) {
 
-            var invoiceam = parseInt($(rowObj).parent().find('td:eq(7)').text());
-            var prevcollectionam = parseInt($(rowObj).parent().find('td:eq(8)').text());
-            var collectionam = parseInt($(rowObj).parent().find('td:eq(9)').text());
-            var prevreturnam = parseInt($(rowObj).parent().find('td:eq(10)').text());
-            var returnam = parseInt($(rowObj).parent().find('td:eq(11)').text());
+            var invoiceam = parseInt($(rowObj).parent().find('td:eq(6)').text());
+            var prevcollectionam = parseInt($(rowObj).parent().find('td:eq(7)').text());
+            var collectionam = parseInt($(rowObj).parent().find('td:eq(8)').text());
+            var prevreturnam = parseInt($(rowObj).parent().find('td:eq(9)').text());
+            var returnam = parseInt($(rowObj).parent().find('td:eq(10)').text());
 
-            isValidWithError($(rowObj).parent().find('td:eq(9)'), 'Collection Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
+            isValidWithError($(rowObj).parent().find('td:eq(8)'), 'Collection Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
 
             if (returnam == 0) {
-                $(rowObj).parent().find('td:eq(12)').text(invoiceam - (collectionam + prevcollectionam + prevreturnam));
+                $(rowObj).parent().find('td:eq(11)').text(invoiceam - (collectionam + prevcollectionam + prevreturnam));
             }
             else {
-                $(rowObj).parent().find('td:eq(12)').text(invoiceam - (collectionam + returnam + prevcollectionam + prevreturnam));
+                $(rowObj).parent().find('td:eq(11)').text(invoiceam - (collectionam + returnam + prevcollectionam + prevreturnam));
             }
-            isValidWithError($(rowObj).parent().find('td:eq(12)'), 'Due Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
+            isValidWithError($(rowObj).parent().find('td:eq(11)'), 'Due Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
 
             var table = document.getElementById("dataTable");
             var colsum = 0;
@@ -505,29 +505,29 @@
                     document.getElementById("duesum").innerText = duesum;
                     break;
                 }
-                colsum += parseInt(row.cells[9].innerText);
-                retsum += parseInt(row.cells[11].innerText);
-                duesum += parseInt(row.cells[12].innerText);
+                colsum += parseInt(row.cells[8].innerText);
+                retsum += parseInt(row.cells[10].innerText);
+                duesum += parseInt(row.cells[11].innerText);
             }
         }
 
         function returnEvent(rowObj) {
-            var invoiceam = parseInt($(rowObj).parent().find('td:eq(7)').text());
-            var prevcollectionam = parseInt($(rowObj).parent().find('td:eq(8)').text());
-            var collectionam = parseInt($(rowObj).parent().find('td:eq(9)').text());
-            var prevreturnam = parseInt($(rowObj).parent().find('td:eq(10)').text());
-            var returnam = parseInt($(rowObj).parent().find('td:eq(11)').text());
+            var invoiceam = parseInt($(rowObj).parent().find('td:eq(6)').text());
+            var prevcollectionam = parseInt($(rowObj).parent().find('td:eq(7)').text());
+            var collectionam = parseInt($(rowObj).parent().find('td:eq(8)').text());
+            var prevreturnam = parseInt($(rowObj).parent().find('td:eq(9)').text());
+            var returnam = parseInt($(rowObj).parent().find('td:eq(10)').text());
 
-            isValidWithError($(rowObj).parent().find('td:eq(11)'), 'Return Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
+            isValidWithError($(rowObj).parent().find('td:eq(10)'), 'Return Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
 
             if (returnam == 0) {
-                $(rowObj).parent().find('td:eq(12)').text(invoiceam - (collectionam + prevcollectionam + prevreturnam));
+                $(rowObj).parent().find('td:eq(11)').text(invoiceam - (collectionam + prevcollectionam + prevreturnam));
             }
             else {
-                $(rowObj).parent().find('td:eq(12)').text(invoiceam - (collectionam + returnam + prevcollectionam + prevreturnam));
+                $(rowObj).parent().find('td:eq(11)').text(invoiceam - (collectionam + returnam + prevcollectionam + prevreturnam));
             }
 
-            isValidWithError($(rowObj).parent().find('td:eq(12)'), 'Due Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
+            isValidWithError($(rowObj).parent().find('td:eq(11)'), 'Due Amount', false, false, false, true, false, 0, null, false, errorColor, defaultColor);
 
             var table = document.getElementById("dataTable");
 
@@ -542,9 +542,9 @@
                     document.getElementById("duesum").innerText = duesum;
                     break;
                 }
-                colsum += parseInt(row.cells[9].innerText);
-                retsum += parseInt(row.cells[11].innerText);
-                duesum += parseInt(row.cells[12].innerText);
+                colsum += parseInt(row.cells[8].innerText);
+                retsum += parseInt(row.cells[10].innerText);
+                duesum += parseInt(row.cells[11].innerText);
             }
         }
 
@@ -617,7 +617,7 @@
                     if (table.rows.length == i + 1) {
                         break;
                     }
-                    if ($("#PaymentID option:selected").text() == "") {
+                    else if (row.cells[12].innerText == "") {
                         var rowData = {
                             'SalesRegisterDetailsID': row.cells[4].innerText,
                             'CollectionAmount': row.cells[8].innerText,
@@ -675,7 +675,6 @@
     </script>
 
 }
-
 
 
 

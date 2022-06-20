@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace DistributorManagement.Models
 {
@@ -14,6 +11,9 @@ namespace DistributorManagement.Models
         public DateTime RegistrationDate { get; set; }
 
         public decimal? TotalInvoiceAmount { get; set; }
+        public decimal? TotalReturnAmount { get; set; }
+
+        public decimal? CashCollection { get; set; }
 
         public int? ProductID { get; set; }
         public virtual Product Product { get; set; }

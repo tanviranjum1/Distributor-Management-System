@@ -15,99 +15,122 @@
     @Html.AntiForgeryToken()
     <div class="row alert alert-info" role="alert">
         <div class="form-horizontal">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    @Html.Label("From", htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.Editor("fromdate", new { htmlAttributes = new { @class = "form-control" , @Value = @DateTime.Today.ToString("dd-MMM-yyyy") } })
-                        @Html.ValidationMessage("From", "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("From", htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div class="col-md-7">
+                            @Html.Editor("fromdate", new { htmlAttributes = new { @class = "form-control", @Value = @DateTime.Today.ToString("dd-MMM-yyyy") } })
+                            @Html.ValidationMessage("From", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("To", htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div class="col-md-7">
+                            @Html.Editor("todate", new { htmlAttributes = new { @class = "form-control", @Value = @DateTime.Today.ToString("dd-MMM-yyyy") } })
+                            @Html.ValidationMessage("To", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Reg Date", htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div class="col-md-7">
+                            @Html.Editor("regdate", new { htmlAttributes = new { @class = "form-control", @Value = @DateTime.Today.ToString("dd-MMM-yyyy") } })
+                            @Html.ValidationMessage("RegistrationDate", "", new { @class = "text-danger" })
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="form-group">
-                    @Html.Label("To", htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.Editor("todate", new { htmlAttributes = new { @class = "form-control", @Value = @DateTime.Today.ToString("dd-MMM-yyyy") } })
-                        @Html.ValidationMessage("To", "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Dsr", htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div class="col-md-7">
+                            @Html.DropDownList("dsrs", (IEnumerable<SelectListItem>)ViewBag.DsrID, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Area", htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div class="col-md-7">
+                            @Html.DropDownList("areas", (IEnumerable<SelectListItem>)ViewBag.AreaID, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Company", htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div class="col-md-7">
+                            @Html.DropDownList("manufacturers", (IEnumerable<SelectListItem>)ViewBag.ManufacturerID, new { @class = "form-control" })
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="form-group">
-                    @Html.Label("Reg Date", htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.Editor("regdate", new { htmlAttributes = new { @class = "form-control", @Value = @DateTime.Today.ToString("dd-MMM-yyyy") } })
-                        @Html.ValidationMessage("RegistrationDate", "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Product", htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div class="col-md-7">
+                            @Html.DropDownList("products", Enumerable.Empty<SelectListItem>(), htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Sr", htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div class="col-md-7">
+                            @Html.DropDownList("srs", (IEnumerable<SelectListItem>)ViewBag.SrID, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Total Invoice", htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div class="col-md-7">
+                            @Html.Editor("totinvoice", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Total Return", htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div class="col-md-7">
+                            @Html.Editor("totreturn", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Cash Collection", htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div class="col-md-7">
+                            @Html.Editor("cashcoll", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    @Html.Label("Dsr", htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.DropDownList("dsrs", (IEnumerable<SelectListItem>)ViewBag.DsrID, new { @class = "form-control" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="form-group">
-                    @Html.Label("Area", htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.DropDownList("areas", (IEnumerable<SelectListItem>)ViewBag.AreaID, new { @class = "form-control" })
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-md-4">
-                <div class="form-group">
-                    @Html.Label("Company", htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.DropDownList("manufacturers", (IEnumerable<SelectListItem>)ViewBag.ManufacturerID, new { @class = "form-control" })
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    @Html.Label("Product", htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.DropDownList("products", Enumerable.Empty<SelectListItem>(), htmlAttributes: new { @class = "form-control" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="form-group">
-                    @Html.Label("Sr", htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.DropDownList("srs", (IEnumerable<SelectListItem>)ViewBag.SrID, new { @class = "form-control"})
-                    </div>
-                </div>
-            </div> 
-            
-            <div class="col-md-4">
-                <div class="form-group">
-                    @Html.Label("Total Invoice", htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.Editor("totinvoice", new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
-                </div>
-            </div>   
-        </div>
-      </div>
     </div>
+
 }
+
 
 @using (Html.BeginForm())
 {
@@ -120,7 +143,91 @@
                     <div class="form-group">
                         @Html.Label("Retailer", htmlAttributes: new { @class = "control-label col-md-4" })
                         <div class="col-md-8">
-                            @Html.DropDownList("customers", (IEnumerable<SelectListItem>)ViewBag.CustomerID, String.Empty, new { @class = "form-control"})
+                            @Html.DropDownList("customers", (IEnumerable<SelectListItem>)ViewBag.CustomerID, String.Empty, new { @class = "form-control", @id = "customersb" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Bank Information", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.Editor("bankinfo", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Cheque Information", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.Editor("chequeinfo", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.Label("Honor Date", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.Editor("honordate", new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessage("honordate", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Amount", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.Editor("amountb", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <a id="add" href="#" style="margin-left:20px" onclick="addRowThree();" class="btn btn-primary">Add</a>
+            </div>
+        </div>
+    </div>
+}
+
+<table id="dataTableThree" style="border-top: 2px solid gray; margin: auto; text-align:center; font-weight: bold; width:95%;" class="table table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th style="text-align:left; display:none">Retailer ID</th>
+            <th style="text-align:left;">Retailer</th>
+            <th style="text-align:left;">Bank Information</th>
+            <th style="text-align:left;">Cheque Information</th>
+            <th style="text-align:left;">Honor Date</th>
+            <th style="text-align:right;">Amount</th>
+            <th style="text-align:center">Action</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4" style="text-align:center; font-weight:bold;">Total Cheque Collection: </td>
+            <td style="text-align:right" id="total-coll">0</td>
+        </tr>
+    </tfoot>
+</table>
+<br>
+<br>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row alert alert-info" role="alert">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.Label("Retailer", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("customers", (IEnumerable<SelectListItem>)ViewBag.CustomerID, String.Empty, new { @class = "form-control" })
                         </div>
                     </div>
                 </div>
@@ -145,17 +252,17 @@
             </div>
 
             <div class="row">
-                <div class="col-md-4">
+                @*<div class="col-md-4">
                     <div class="form-group">
                         @Html.Label("Gift Item", htmlAttributes: new { @class = "control-label col-md-4" })
                         <div class="col-md-8">
                             @Html.Editor("gift", new { htmlAttributes = new { @class = "form-control" } })
                         </div>
                     </div>
-                </div>
+                </div>*@
                 <div class="col-md-4 col-md-offset-1">
-                        <a id="add" href="#" onclick="addRow();" class="btn btn-primary">Add</a>
-                 </div>
+                    <a id="add" href="#" onclick="addRow();" class="btn btn-primary">Add</a>
+                </div>
             </div>
         </div>
     </div>
@@ -174,8 +281,7 @@
             <th style="text-align:center;">Action</th>
         </tr>
     </thead>
-    <tbody>
-    </tbody>
+    <tbody></tbody>
     <tfoot>
         <tr>
             <td colspan="2" style="text-align:center; font-weight:bold;">Total: </td>
@@ -185,6 +291,59 @@
 </table>
 <br>
 <br>
+
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row alert alert-info" role="alert">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.Label("Expense Head", new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownList("expenseh", (IEnumerable<SelectListItem>)ViewBag.ExpenseHeadID, String.Empty, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label("Amount", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.Editor("amount", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <a id="add" href="#" style="margin-left:20px" onclick="addRowTwo();" class="btn btn-primary">Add</a>
+            </div>
+        </div>
+    </div>
+}
+
+<table id="dataTableTwo" style="border-top: 2px solid gray; margin: auto; text-align:center; font-weight: bold; width:95%;" class="table table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th style="text-align:left; display:none">Expense HeadID</th>
+            <th style="text-align:left;">Expense Head</th>
+            <th style="text-align:right;">Amount</th>
+            <th style="text-align:center">Action</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+        <tr>
+            <td colspan="1" style="text-align:center; font-weight:bold;">Total Expense: </td>
+            <td style="text-align:right" id="total-eamount">0</td>
+        </tr>
+    </tfoot>
+</table>
+<br>
+<br>
+
 
 <br />
 <div style="text-align:center">
@@ -196,7 +355,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js">  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
     <script src="~/Scripts/CustomValidations.js"></script>
@@ -222,7 +381,7 @@
             });
             $('#todate').datetimepicker({
                 showClear: true,
-                format: "DD-MMM-YYYY" 
+                format: "DD-MMM-YYYY"
             });
             $('#regdate').datetimepicker({
                 showClear: true,
@@ -243,17 +402,17 @@
                 option.value = "";
                 ddl.options.add(option);
                 $.get('/SalesRegisters/getProducts',
-                function (data, status) {
-                    for (i = 0; i < data.Product.length; i++) {
-                        if (data.Product[i].ManufacturerID == $("#manufacturers").val()) {
-                            var ddl = document.getElementById("products");
-                            var option = document.createElement("OPTION");
-                            option.innerHTML = data.Product[i].Name;
-                            option.value = data.Product[i].ID;
-                            ddl.options.add(option);
+                    function (data, status) {
+                        for (i = 0; i < data.Product.length; i++) {
+                            if (data.Product[i].ManufacturerID == $("#manufacturers").val()) {
+                                var ddl = document.getElementById("products");
+                                var option = document.createElement("OPTION");
+                                option.innerHTML = data.Product[i].Name;
+                                option.value = data.Product[i].ID;
+                                ddl.options.add(option);
+                            }
                         }
-                    }
-                });
+                    });
             }
         });
 
@@ -270,17 +429,17 @@
                 option.value = "";
                 ddl.options.add(option);
                 $.get('/SalesRegisters/getAreas',
-                function (data, status) {
-                    for (i = 0; i < data.DsrArea.length; i++) {
-                        if (data.DsrArea[i].DsrID == $("#dsrs").val()) {
-                            var ddl = document.getElementById("areas");
-                            var option = document.createElement("OPTION");
-                            option.innerHTML = data.DsrArea[i].Area.Name;
-                            option.value = data.DsrArea[i].Area.ID;
-                            ddl.options.add(option);
+                    function (data, status) {
+                        for (i = 0; i < data.DsrArea.length; i++) {
+                            if (data.DsrArea[i].DsrID == $("#dsrs").val()) {
+                                var ddl = document.getElementById("areas");
+                                var option = document.createElement("OPTION");
+                                option.innerHTML = data.DsrArea[i].Area.Name;
+                                option.value = data.DsrArea[i].Area.ID;
+                                ddl.options.add(option);
+                            }
                         }
-                    }
-                });
+                    });
             }
         });
 
@@ -292,25 +451,135 @@
             else {
                 $("#dataTable tr td").remove();
                 $.get('/SalesRegisters/getRetailerProducts',
-                     function (data, status) {
-                         for (i = 0; i < data.RetailerProduct.length; i++) {
-                             if (data.RetailerProduct[i].ProductID == $("#products").val()) {
-                                 $("#dataTable tbody").append(
-                                     '<tr><td style="display:none;" class="customer-id" >' + data.RetailerProduct[i].CustomerID + '</td>' +
-                                     '<td class="customername" style="text-align:left;" >' + data.RetailerProduct[i].Customer.Name + '</td>' +
-                                     '<td class="invoiceno" contenteditable="true" style="text-align:left;" onkeyup="isValidWithError(this, \'Invoice Number\', false, false, true, false, false, null, null, false, \'' + errorColor + '\', \'' + defaultColor + '\');" ></td>' +
-                                     '<td class="invoiceam" contenteditable="true" style="text-align:right;" onkeyup="dueEvent(this)">' + 0 +' </td>' +
-                                     '<td class="gift" contenteditable="true" style="text-align:left;"  ></td>' +
-                                     '<td><button id="edit" onclick="editRow(this);" class="btn btn-warning btn-sm">Edit </button> <button id="delete" onclick="delRow(this);"  class="btn btn-danger btn-sm">Delete </button>  </td></tr>'
-                                 );   
-                             }
-                         }
-                         $("#dataTable tfoot").append('<tr >' +
-                          '<td colspan="2" style="text-align:center; font-weight:bold">Total :</td>' +
-                          '<td style="text-align:right" id="total-amount">' + 0 + '</td>' + '</tr>');
-                     });
+                    function (data, status) {
+                        for (i = 0; i < data.RetailerProduct.length; i++) {
+                            if (data.RetailerProduct[i].ProductID == $("#products").val()) {
+                                $("#dataTable tbody").append(
+                                    '<tr><td style="display:none;" class="customer-id" >' + data.RetailerProduct[i].CustomerID + '</td>' +
+                                    '<td class="customername" style="text-align:left;" >' + data.RetailerProduct[i].Customer.Name + '</td>' +
+                                    '<td class="invoiceno" contenteditable="true" style="text-align:left;" onkeyup="isValidWithError(this, \'Invoice Number\', false, false, true, false, false, null, null, false, \'' + errorColor + '\', \'' + defaultColor + '\');" ></td>' +
+                                    '<td class="invoiceam" contenteditable="true" style="text-align:right;" onkeyup="dueEvent(this)">' + 0 + ' </td>' +
+                                    '<td class="gift" contenteditable="true" style="text-align:left;"  ></td>' +
+                                    '<td><button id="edit" onclick="editRow(this);" class="btn btn-warning btn-sm">Edit </button> <button id="delete" onclick="delRow(this);"  class="btn btn-danger btn-sm">Delete </button>  </td></tr>'
+                                );
+                            }
+                        }
+                        $("#dataTable tfoot").append('<tr >' +
+                            '<td colspan="2" style="text-align:center; font-weight:bold">Total :</td>' +
+                            '<td style="text-align:right" id="total-amount">' + 0 + '</td>' + '</tr>');
+                    });
             }
         }
+
+        var totalCollAmount = 0;
+        var editStatB = false;
+        var currObjB = null;
+
+
+        function editRowThree(rowObj) {
+            var dpvalue = $(rowObj).parent().parent().find(".customer-id-two").text();
+            $("#customersb").val(dpvalue).trigger('change');
+            $("#bankinfo").val($(rowObj).parent().parent().find(".bank-info").text());
+            $("#chequeinfo").val($(rowObj).parent().parent().find(".cheque-info").text());
+            $("#honordate").val($(rowObj).parent().parent().find(".honor-date").text());
+            var amountb = $(rowObj).parent().parent().find(".amount-b").text();
+            $("#amountb").val(amountb);
+            editStatB = true;
+            currObjB = rowObj;
+            totalCollAmount -= parseInt(amountb);
+        }
+
+        function addRowThree() {
+            if (!$("#customersb").val()) {
+                alert("Add Retailer.");
+            }
+            else {
+                if (editStatB) {
+                    $(currObjB).parent().parent().find(".customer-id-two").text($("#customersb option:selected").val());
+                    $(currObjB).parent().parent().find(".customer-name-two").text($("#customersb option:selected").text());
+                    $(currObjB).parent().parent().find(".bank-info").text($("#bankinfo").val());
+                    $(currObjB).parent().parent().find(".cheque-info").text($("#chequeinfo").val());
+                    $(currObjB).parent().parent().find(".honor-date").text($("#honordate").val());
+                    $(currObjB).parent().parent().find(".amount-b").text($("#amountb").val());
+                    totalCollAmount += parseInt($("#amountb").val());
+                    editStatB = false;
+                    currObjB = null;
+                }
+                else {
+                    totalCollAmount += parseInt($("#amountb").val());
+                    $("#dataTableThree").append(
+                        '<tr><td class="customer-id-two" style="display:none">' + $("#customersb option:selected").val() + '</td>' +
+                        '<td class="customer-name-two" style="text-align:left;" >' + $("#customersb option:selected").text() + '</td>' +
+                        '<td class="bank-info" style="text-align:left;" >' + $("#bankinfo").val() + '</td>' +
+                        '<td class="cheque-info" style="text-align:left;" >' + $("#chequeinfo").val() + '</td>' +
+                        '<td class="honor-date" style="text-align:left;" >' + $("#honordate").val() + '</td>' +
+                        '<td class="amount-b" style="text-align:right;" >' + $("#amountb").val() + '</td>' +
+                        '<td><button id="edit" onclick="editRowThree(this);" class="btn btn-warning btn-sm">Edit </button> <button id="delete" onclick="delRowThree(this);"  class="btn btn-danger btn-sm">Delete </button>  </td></tr>'
+                    );
+                }
+                document.getElementById("total-coll").innerText = totalCollAmount;
+            }
+        }
+
+        function delRowThree(rowObj) {
+            var amount = parseInt($(rowObj).parent().parent().find(".amount-b").text());
+            totalCollAmount -= amount;
+            document.getElementById("total-coll").innerText = totalCollAmount;
+            $(rowObj).parent().parent().remove();
+        }
+
+        var totalExpense = 0;
+        var editStatE = false;
+        var currObjE = null;
+
+        function editRowTwo(rowObj) {
+            var expvalue = $(rowObj).parent().parent().find(".exp-id").text();
+            $("#expenseh").val(expvalue).trigger('change');
+
+            var amount = $(rowObj).parent().parent().find(".am").text();
+            $("#amount").val(amount);
+            totalExpense -= amount;
+
+            editStatE = true;
+            currObjE = rowObj;
+        }
+
+        function addRowTwo() {
+            if (document.getElementById("expenseh").value == "") {
+                alert("Please Select Expense Head");
+            }
+            else if (document.getElementById("amount").value == "") {
+                alert("Please Enter Amount For Expense Head");
+            }
+            else {
+                if (editStatE) {
+                    $(currObjE).parent().parent().find(".exp-id").text($("#expenseh option:selected").val());
+                    $(currObjE).parent().parent().find(".exp").text($("#expenseh option:selected").text());
+                    $(currObjE).parent().parent().find(".am").text($("#amount").val());
+                    totalExpense += parseFloat($("#amount").val());
+                    editStatE = false;
+                    currObjE = null;
+                }
+                else {
+                    totalExpense += parseFloat($("#amount").val());
+                    $("#dataTableTwo").append(
+                        '<tr><td class="exp-id" style="display:none">' + $("#expenseh option:selected").val() + '</td>' +
+                        '<td class="exp" style="text-align:left" >' + $("#expenseh option:selected").text() + '</td>' +
+                        '<td class="am" style="text-align:right" >' + $("#amount").val() + '</td>' +
+                        '<td><button id="edit" onclick="editRowTwo(this);" class="btn btn-warning btn-sm">Edit </button> <button id="delete" onclick="delRowTwo(this);"  class="btn btn-danger btn-sm">Delete </button>  </td></tr>'
+                    );
+                }
+                document.getElementById("total-eamount").innerText = totalExpense;
+            }
+        }
+
+        function delRowTwo(rowObj) {
+            var amount = $(rowObj).parent().parent().find(".am").text();
+            totalExpense -= parseFloat(amount);
+            document.getElementById("total-eamount").innerText = totalExpense;
+            $(rowObj).parent().parent().remove();
+        }
+
 
 
         $("#areas").change(function () {
@@ -388,15 +657,15 @@
         }
 
 
-        function dueEvent(rowObj){
+        function dueEvent(rowObj) {
             //isValidWithError(this, \'Invoice Amount\', false, false, true, true, false, 1, null, false, \'' + errorColor + '\', \'' + defaultColor + '\');" >0</td>'
-            
+
             totalDueAmount = 0;
             $("#dataTable tbody tr").each(function () {
                 totalDueAmount += parseInt($(this).find('.invoiceam').text());
             });
             console.log(totalDueAmount);
-         
+
             document.getElementById("total-amount").innerText = totalDueAmount;
 
             isValidWithError(rowObj, 'Invoice Amount', false, false, true, true, false, 1, null, false, errorColor, defaultColor);
@@ -419,9 +688,8 @@
         }
 
         function addRow() {
-   
-            if (!ValidateData())
-            {
+
+            if (!ValidateData()) {
                 //validation fails.
             }
             if (!$("#customers").val()) {
@@ -477,18 +745,52 @@
             //    return;
             //}
 
+
+            var rowsThree = [];
+            $("#dataTableThree tbody tr").each(function () {
+                var rowData = {
+                    'CustomerID': $(this).find(".customer-id-two") ? $(this).find(".customer-id-two").text() : "",
+                    'BankInformation': $(this).find(".bank-info").text() ? $(this).find(".bank-info").text() : "",
+                    'ChequeInformation': $(this).find(".cheque-info").text() ? $(this).find(".cheque-info").text() : "",
+                    'HonorDate': $(this).find(".honor-date").text() ? $(this).find(".honor-date").text() : "",
+                    'Amount': $(this).find(".amount-b").text() ? $(this).find(".amount-b").text() : "",
+                };
+                rowsThree.push(rowData);
+            });
+
+
+
+
+            var rowsTwo = [];
+            $("#dataTableTwo tbody tr").each(function () {
+                var rowData = {
+                    "Date": $("#regdate").val(),
+                    'DsrID': $("#dsrs").val(),
+                    'ManufacturerID': $("#manufacturers").val(),
+                    'ProductID': $("#products").val(),
+                    'ExpenseHeadID': $(this).find(".exp-id").text() ? $(this).find(".exp-id").text() : "",
+                    'Amount': $(this).find(".am").text() ? $(this).find(".am").text() : "",
+                };
+                rowsTwo.push(rowData);
+            });
+
+
             var rows = [];
             $("#dataTable tbody tr").each(function () {
                 var rowData = {
                     'CustomerID': $(this).find(".customer-id") ? $(this).find(".customer-id").text() : "",
                     'InvoiceNumber': $(this).find(".invoiceno").text() ? $(this).find(".invoiceno").text() : "",
                     'InvoiceAmount': $(this).find(".invoiceam").text() ? $(this).find(".invoiceam").text() : "",
-                    'GiftItem': $(this).find(".gift").text(),
+                    'GiftItem': "Not taking input anymore",
                 };
                 rows.push(rowData);
             });
+
             console.log(rows);
-        
+            console.log(rowsTwo);
+            console.log(rowsThree);
+
+
             var inputData = {
                 'SalesRegister': {
                     'From': $("#fromdate").val(),
@@ -499,9 +801,15 @@
                     'ManufacturerID': $("#manufacturers option:selected").val(),
                     'AreaID': $("#areas option:selected").val(),
                     'ProductID': $("#products option:selected").val(),
-                    'TotalInvoiceAmount': $("#totinvoice").val()
+                    'TotalInvoiceAmount': $("#totinvoice").val(),
+                    'CashCollection': $("#cashcoll").val(),
+                    'TotalReturnAmount': $("#totreturn").val(),
+
                 },
-                'SalesRegisterDetails': rows
+                'SalesRegisterDetails': rows,
+                'Expense': rowsTwo,
+                'SalesRegisterChequeInformation': rowsThree
+
             };
 
             $.post('/SalesRegisters/insertSalesRegister', inputData,

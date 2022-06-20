@@ -1,12 +1,14 @@
-﻿using DistributorManagement.Models;
-using DistributorManagement.Repositories;
-using DistributorManagement.ViewModels;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
+using DistributorManagement.Models;
+using DistributorManagement.ViewModels;
+using DistributorManagement.Repositories;
 
 namespace DistributorManagement.Controllers
 {
@@ -78,6 +80,8 @@ namespace DistributorManagement.Controllers
             ViewBag.DsrID = new SelectList(db.Dsrs, "ID", "Name");
             ViewBag.ManufacturerID = new SelectList(db.Manufacturers, "ID", "Name");
             ViewBag.SrID = new SelectList(db.Srs, "ID", "Name");
+            ViewBag.ExpenseHeadID = new SelectList(db.ExpenseHead, "ID", "Name");
+
             ViewBag.Customers = CommonDataRepository.getCustomSelectList(db.Customers
                 .Select(r => new CustomSelectItemViewModel()
                 {
@@ -103,11 +107,25 @@ namespace DistributorManagement.Controllers
                 AreaID = srvm.SalesRegister.AreaID,
                 SrID = srvm.SalesRegister.SrID,
                 ProductID = srvm.SalesRegister.ProductID,
-                TotalInvoiceAmount = srvm.SalesRegister.TotalInvoiceAmount
+                CashCollection = srvm.SalesRegister.CashCollection,
+                TotalReturnAmount = srvm.SalesRegister.TotalReturnAmount,
+                TotalInvoiceAmount = srvm.SalesRegister.TotalInvoiceAmount,
             };
             db.SalesRegister.Add(salesRegister);
             db.SaveChanges();
 
+            foreach (var item in srvm.Expense)
+            {
+                item.SalesRegisterID = salesRegister.ID;
+                db.Expense.Add(item);
+                db.SaveChanges();
+            }
+            foreach (var item in srvm.SalesRegisterChequeInformation)
+            {
+                item.SalesRegisterID = salesRegister.ID;
+                db.SalesRegisterChequeInformation.Add(item);
+                db.SaveChanges();
+            }
             foreach (var item in srvm.SalesRegisterDetails)
             {
                 item.SalesRegisterID = salesRegister.ID;
@@ -223,7 +241,6 @@ namespace DistributorManagement.Controllers
             return View(svm);
         }
 
-
         // GET: SalesRegisters/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -243,11 +260,21 @@ namespace DistributorManagement.Controllers
                     db.SalesRegisterDetails.Remove(vp);
                 db.SaveChanges();
 
+                var li = db.Expense.Where(a => a.SalesRegisterID == id).ToList();
+                foreach (var item in li)
+                    db.Expense.Remove(item);
+                db.SaveChanges();
+
+                var litwo = db.SalesRegisterChequeInformation.Where(a => a.SalesRegisterID == id).ToList();
+                foreach (var item in litwo)
+                    db.SalesRegisterChequeInformation.Remove(item);
+                db.SaveChanges();
+
                 db.SalesRegister.Remove(salesRegister);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch (Exception )
+            catch (Exception e)
             {
                 return RedirectToAction("Index", new { err = 1 });
             }
@@ -262,4 +289,5 @@ namespace DistributorManagement.Controllers
         }
     }
 }
+
 

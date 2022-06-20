@@ -181,7 +181,24 @@
     <Compile Include="Migrations\202206051610370_Coll Controller.Designer.cs">
       <DependentUpon>202206051610370_Coll Controller.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202206151711340_saleregid in expense.cs" />
+    <Compile Include="Migrations\202206151711340_saleregid in expense.Designer.cs">
+      <DependentUpon>202206151711340_saleregid in expense.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202206151724065_as olletion added.cs" />
+    <Compile Include="Migrations\202206151724065_as olletion added.Designer.cs">
+      <DependentUpon>202206151724065_as olletion added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202206151814265_Cheque Information Added.cs" />
+    <Compile Include="Migrations\202206151814265_Cheque Information Added.Designer.cs">
+      <DependentUpon>202206151814265_Cheque Information Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202206151932351_New1.cs" />
+    <Compile Include="Migrations\202206151932351_New1.Designer.cs">
+      <DependentUpon>202206151932351_New1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\SalesRegisterChequeInformation.cs" />
     <Compile Include="Repositories\CommonDataRepository.cs" />
     <Compile Include="Repositories\CollectionDataRepository.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -226,6 +243,7 @@
     <Compile Include="ViewModels\AreaFilterViewModel.cs" />
     <Compile Include="ViewModels\CollectionsFilterViewModel.cs" />
     <Compile Include="ViewModels\CollectionsViewModel.cs" />
+    <Compile Include="ViewModels\CompanyWisExpenseReportFilterViewModel.cs" />
     <Compile Include="ViewModels\CustomerFilterViewModel.cs" />
     <Compile Include="ViewModels\CustomSelectItemViewModel.cs" />
     <Compile Include="ViewModels\DsrAreaViewModel.cs" />
@@ -237,6 +255,7 @@
     <Compile Include="ViewModels\RetailerProductViewModel.cs" />
     <Compile Include="ViewModels\CustomersReportFilterViewModel.cs" />
     <Compile Include="ViewModels\SaleRegisterFilterViewModel.cs" />
+    <Compile Include="ViewModels\SalesRegisterCollectionSummaryReportFilterViewModel.cs" />
     <Compile Include="ViewModels\SalesRegisterViewModel.cs" />
     <Compile Include="ViewModels\SrFilterViewModel.cs" />
   </ItemGroup>
@@ -341,6 +360,8 @@
     <Content Include="Views\Expenses\Edit.cshtml" />
     <Content Include="Views\Expenses\Index.cshtml" />
     <Content Include="Views\Report\CustomerDetailsReport.cshtml" />
+    <Content Include="Views\Report\CompanyWiseExpenseReport.cshtml" />
+    <Content Include="Views\Report\SaleRegisterWiseCollectionSummaryReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -362,6 +383,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202206051610370_Coll Controller.resx">
       <DependentUpon>202206051610370_Coll Controller.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202206151711340_saleregid in expense.resx">
+      <DependentUpon>202206151711340_saleregid in expense.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202206151724065_as olletion added.resx">
+      <DependentUpon>202206151724065_as olletion added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202206151814265_Cheque Information Added.resx">
+      <DependentUpon>202206151814265_Cheque Information Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202206151932351_New1.resx">
+      <DependentUpon>202206151932351_New1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

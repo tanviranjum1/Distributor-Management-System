@@ -23,6 +23,8 @@ namespace DistributorManagement.Models
         public DbSet<ExpenseHead> ExpenseHead { get; set; }
         public DbSet<CollectionExpense> CollectionExpense { get; set; }
         public DbSet<Expense> Expense { get; set; }
+        public DbSet<SalesRegisterChequeInformation> SalesRegisterChequeInformation { get; set; }
+
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

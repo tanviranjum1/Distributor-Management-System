@@ -151,3 +151,7 @@ D:\My DMS Software\DistributorManagement\DistributorManagement\obj\Debug\Distrib
 D:\My DMS Software\DistributorManagement\DistributorManagement\obj\Debug\DistributorManagement.Migrations.New.resources
 D:\My DMS Software\DistributorManagement\DistributorManagement\obj\Debug\DistributorManagement.csprojAssemblyReference.cache
 D:\My DMS Software\DistributorManagement\DistributorManagement\obj\Debug\DistributorManagement.Migrations.CollController.resources
+D:\My DMS Software\DistributorManagement\DistributorManagement\obj\Debug\DistributorManagement.Migrations.saleregidinexpense.resources
+D:\My DMS Software\DistributorManagement\DistributorManagement\obj\Debug\DistributorManagement.Migrations.asolletionadded.resources
+D:\My DMS Software\DistributorManagement\DistributorManagement\obj\Debug\DistributorManagement.Migrations.ChequeInformationAdded.resources
+D:\My DMS Software\DistributorManagement\DistributorManagement\obj\Debug\DistributorManagement.Migrations.New1.resources
